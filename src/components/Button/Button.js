@@ -35,12 +35,13 @@ class Button extends Component {
       flat,
       outline,
       disabled, 
+      iconSize,
     } = this.props
     return (
       <VectorIcon 
         name={icon}
         color={flat || outline ? color : disabled ? COLOR.GREY : COLOR.WHITE }
-        size={20}
+        size={iconSize}
       />
     )
   }
@@ -57,8 +58,9 @@ class Button extends Component {
       disabled,
       icon,
       iconPosition,
+      isHighlight,
     } = this.props
-    const Touchable = flat ? TouchableHighlight : TouchableOpacity
+    const Touchable = flat && isHighlight ? TouchableHighlight : TouchableOpacity
     if(!disabled) {
       return (
         <Touchable 
@@ -108,7 +110,9 @@ Button.defaultProps = {
   loading: false,
   disabled: false,
   icon: null,
-  iconPosition: 'left'
+  iconPosition: 'left',
+  isHighlight: true,
+  iconSize: 20,
 }
 
 Button.propTypes = {
@@ -122,6 +126,8 @@ Button.propTypes = {
   disabled: PropTypes.bool,
   icon: PropTypes.string,
   iconPosition: PropTypes.string,
+  isHighlight: PropTypes.bool,
+  iconSize: PropTypes.number,
 }
 
 export default Button
