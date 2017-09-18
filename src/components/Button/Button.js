@@ -17,7 +17,7 @@ class Button extends Component {
     if(disabled) {
       return (
         <ActivityIndicator 
-          color={COLOR.GREY} 
+          color={COLOR.DISABLED} 
         />
       )
     }
@@ -40,7 +40,7 @@ class Button extends Component {
     return (
       <VectorIcon 
         name={icon}
-        color={flat || outline ? color : disabled ? COLOR.GREY : COLOR.WHITE }
+        color={flat || outline ? color : disabled ? COLOR.DISABLED : COLOR.WHITE }
         size={iconSize}
       />
     )

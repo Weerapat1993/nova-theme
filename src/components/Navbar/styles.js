@@ -3,7 +3,7 @@ import { COLOR } from '../../assets'
 import Theme from '../../config/theme'
 
 const { STATUS_BAR } = Theme
-const { PRIMARY } = Theme.COLOR
+const { PRIMARY } = Theme.getColor()
 
 export default {
   statusBar: {

@@ -4,6 +4,8 @@ import Navbar from './Navbar'
 import SearchBox from './SearchBox'
 import FloatingButton from './FloatingButton'
 import TextHeader from './TextHeader'
+import { Tabbar, TabbarItem } from './Tabbar'
+import Paragraph from './Paragraph'
 
 export {
   Button,
@@ -12,4 +14,7 @@ export {
   SearchBox,
   FloatingButton,
   TextHeader,
+  Tabbar,
+  TabbarItem,
+  Paragraph,
 }

@@ -6,16 +6,15 @@ export default {
     backgroundColor: COLOR.WHITE,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 15,
   },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    margin: 10,
+    paddingVertical: 10,
   },
   column: {
     flexDirection: 'column',
-    margin: 10,
+    paddingVertical: 10,
   },
   colorView: {
     flex: 1,

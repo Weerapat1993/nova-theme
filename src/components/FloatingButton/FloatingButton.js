@@ -6,7 +6,7 @@ import IconButton from '../IconButton'
 const styles = {
   floatingView: {
     position: 'absolute',
-    bottom: 20,
+    bottom: 25,
     right: 15,
   }
 }

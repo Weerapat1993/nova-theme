@@ -29,7 +29,7 @@ Navbar.defaultProps = {
   height: 60,
 }
 
-Navbar.propTpyes = {
+Navbar.propTypes = {
   title: PropTypes.string,
   height: PropTypes.number,
   children: PropTypes.node,
