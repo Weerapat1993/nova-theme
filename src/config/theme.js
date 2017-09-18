@@ -1,8 +1,8 @@
 import { Platform } from 'react-native'
 
-const Theme = {
+export const initalTheme = {
   COLOR: {
-    PRIMARY: '#0f9d58',
+    PRIMARY: '#39C',
     DEFAULT: '#eee',
   },
   STATUS_BAR: {
@@ -10,4 +10,19 @@ const Theme = {
   }
 }
 
-export default Theme
+class Theme {
+  constructor(initalTheme) {
+    this.COLOR = initalTheme.COLOR
+    this.STATUS_BAR = initalTheme.STATUS_BAR
+  }
+
+  setColorPrimary(color) {
+    this.COLOR.PRIMARY = color
+  } 
+
+  getColor() {
+    return this.COLOR
+  }
+}
+
+export default new Theme(initalTheme)

@@ -1,7 +1,6 @@
-import { StyleSheet } from 'react-native'
 import { COLOR } from '../../assets'
 
-export default StyleSheet.create({
+export default {
   container: {
     flex: 1,
     backgroundColor: COLOR.WHITE,
@@ -13,5 +12,21 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     margin: 10,
-  }
-});
+  },
+  column: {
+    flexDirection: 'column',
+    margin: 10,
+  },
+  colorView: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 60
+  },
+  backgroundColor: (color) => ({
+    backgroundColor: color
+  }),
+  color: (color) => ({
+    color
+  })
+}

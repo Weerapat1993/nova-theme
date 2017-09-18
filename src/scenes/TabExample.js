@@ -1,13 +1,22 @@
 import React, { PureComponent } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
-import { Navbar } from '../components'
+import { Actions } from 'react-native-router-flux'
+import { Navbar, IconButton } from '../components'
+import { COLOR } from '../assets'
 
 const FirstRoute = () => <View style={[ styles.container, { backgroundColor: '#ff4081' } ]} />;
 const SecondRoute = () => <View style={[ styles.container, { backgroundColor: '#673ab7' } ]} />;
 const ThirdRoute = () => <View style={[ styles.container, { backgroundColor: '#0A0' } ]} />;
 const FourthRoute = () => <View style={[ styles.container, { backgroundColor: '#C93' } ]} />;
 const FifthRoute = () => <View style={[ styles.container, { backgroundColor: '#39C' } ]} />;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#673ab7',
+  },
+});
 
 export default class TabViewExample extends PureComponent {
   state = {
@@ -34,9 +43,31 @@ export default class TabViewExample extends PureComponent {
   });
 
   render() {
+    const menuLeft = (
+      <IconButton 
+        name='keyboard-backspace'
+        color={COLOR.WHITE}
+        flat
+        isHighlight={false}
+        iconSize={24}
+        onPress={() => Actions.pop()}
+      />
+    )
+    const menuRight = (
+      <IconButton 
+        name='search'
+        color={COLOR.WHITE}
+        flat
+        isHighlight={false}
+        iconSize={24}
+        onPress={() => alert('Hi')}
+      />
+    )
     return (
       <Navbar
         title='Title'
+        menuLeft={menuLeft}
+        menuRight={menuRight}
       >
         <TabViewAnimated
           style={styles.container}
@@ -49,10 +80,3 @@ export default class TabViewExample extends PureComponent {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#673ab7',
-  },
-});

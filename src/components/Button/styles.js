@@ -12,10 +12,10 @@ const {
 } = COLOR
 
 export default {
-  buttonView: (color, rounded, flat, outline) => ({
-    padding: 10,
+  buttonView: (color, rounded, flat, outline, padding) => ({
+    padding,
     backgroundColor: (flat || outline) ? 'transparent' : color,
-    borderRadius: rounded ? 30 : 0,
+    borderRadius: rounded ? 50 : 0,
     borderWidth: outline ? 2 : 0,
     borderColor: outline ? color : BLACK,
   }),

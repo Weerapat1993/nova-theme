@@ -59,14 +59,17 @@ class Button extends Component {
       icon,
       iconPosition,
       isHighlight,
+      padding,
+      style,
     } = this.props
     const Touchable = flat && isHighlight ? TouchableHighlight : TouchableOpacity
     if(!disabled) {
       return (
         <Touchable 
-          style={styles.buttonView(color, rounded, flat, outline)} 
+          style={[styles.buttonView(color, rounded, flat, outline, padding), style]} 
           underlayColor='#eee'
-          onPress={onPress}>
+          onPress={onPress}
+          >
           <View style={styles.buttonTextRow}>
             { loading && !icon && iconPosition === 'left' && this.renderLoading() }
             { icon && !loading && iconPosition === 'left' && this.renderIcon() }
@@ -83,7 +86,7 @@ class Button extends Component {
       )
     }
     return (
-      <View style={styles.buttonView('#eee', rounded, flat, outline)} >
+      <View style={[styles.buttonView('#eee', rounded, flat, outline, padding), style]} >
         <View style={styles.buttonTextRow}>
           { loading && !icon && iconPosition === 'left' && this.renderLoading() }
           { icon && !loading && iconPosition === 'left' && this.renderIcon() }
@@ -113,6 +116,8 @@ Button.defaultProps = {
   iconPosition: 'left',
   isHighlight: true,
   iconSize: 20,
+  padding: 10,
+  style: {},
 }
 
 Button.propTypes = {
@@ -128,6 +133,8 @@ Button.propTypes = {
   iconPosition: PropTypes.string,
   isHighlight: PropTypes.bool,
   iconSize: PropTypes.number,
+  padding: PropTypes.number,
+  style: PropTypes.object,
 }
 
 export default Button
