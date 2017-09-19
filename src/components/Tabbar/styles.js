@@ -29,5 +29,8 @@ export default {
   },
   color: (color) => ({
     color
-  }) 
+  }),
+  flex: {
+    flex: 1,
+  }
 }

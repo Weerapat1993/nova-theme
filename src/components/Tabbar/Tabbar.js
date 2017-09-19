@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { View, Animated, Dimensions } from 'react-native'
+import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures'
 import styles from './styles'
 import TabbarItem from './TabbarItem'
 import Flex from '../Flex'
 
+const { SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT } = swipeDirections
 const leftValue = (total, active) => {
   const { width } = Dimensions.get('window')
   return Math.floor((width / total) * active)
@@ -57,7 +59,30 @@ class Tabbar extends Component {
     this.setState({ tabActive })
   }
 
+  onSwipe(direction, gestureState) {
+    const { tabActive, total } = this.state
+    if (direction && direction !== SWIPE_UP && direction !== SWIPE_DOWN) {
+      switch (direction) {
+        case SWIPE_LEFT:
+          if(tabActive) {
+            this.setState({ tabActive: tabActive - 1 })
+          }
+          break;
+        case SWIPE_RIGHT:
+          if(tabActive < total - 1) {
+            this.setState({ tabActive: tabActive + 1 })
+          }
+          break;
+        default:
+      }
+    }
+  }
+
   render () {
+    const config = {
+      velocityThreshold: 0.3,
+      directionalOffsetThreshold: 80
+    }
     const { total, underlinePosition, tabActive } = this.state
     const { children, bgColor, underlineColor, theme } = this.props
     return (
@@ -80,15 +105,22 @@ class Tabbar extends Component {
           }
           <Animated.View style={styles.tabbarStick(total, underlinePosition, underlineColor)} />
         </View>
-        {
-          React.Children.map(children, (child, key) => {
-            const Components = child.props.component
-            if(tabActive !== key) return null 
-            return (
-              <Components {...child.props} theme={theme} />
-            )
-          })
-        }
+        <GestureRecognizer
+          onSwipeLeft={state => this.onSwipe(SWIPE_LEFT, state)}
+          onSwipeRight={state => this.onSwipe(SWIPE_RIGHT, state)}
+          config={config}
+          style={styles.flex}
+        >
+          {
+            React.Children.map(children, (child, key) => {
+              const Components = child.props.component
+              if(tabActive !== key) return null 
+              return (
+                <Components {...child.props} theme={theme} />
+              )
+            })
+          }
+        </GestureRecognizer>
       </Flex>
     )
   }
