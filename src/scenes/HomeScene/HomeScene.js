@@ -104,6 +104,7 @@ class HomeScene extends Component {
           <ThemeColor title='Google Blue' color='#39c' onPress={() => this.setTheme('#39c')} />
           <ThemeColor title='Google Green' color='#0f9d58' onPress={() => this.setTheme('#0f9d58')} />
           <ThemeColor title='Google Red' color='#c30' onPress={() => this.setTheme('#c30')} />
+          <ThemeColor title='Google Yellow' color='#FB1' onPress={() => this.setTheme('#FB1')} />
         </Flex>
       </Navbar>
     )
