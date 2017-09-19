@@ -7,6 +7,7 @@ import TextHeader from './TextHeader'
 import { Tabbar, TabbarComponent } from './Tabbar'
 import Paragraph from './Paragraph'
 import Flex from './Flex'
+import Image from './Image'
 
 export {
   Button,
@@ -19,4 +20,5 @@ export {
   TabbarComponent,
   Paragraph,
   Flex,
+  Image,
 }
