@@ -8,10 +8,11 @@ const Navbar = ({
   height, 
   children, 
   menuLeft, 
-  menuRight 
+  menuRight,
+  theme,
 }) => (
   <View style={styles.statusBar}>
-    <View style={styles.navbarView(height)}>
+    <View style={styles.navbarView(height, theme.PRIMARY)}>
       {menuLeft}
       <View style={styles.headerView}>
         <Text style={styles.headerText}>{title}</Text>
@@ -34,7 +35,8 @@ Navbar.propTypes = {
   height: PropTypes.number,
   children: PropTypes.node,
   menuLeft: PropTypes.node,
-  menuRight: PropTypes.node
+  menuRight: PropTypes.node,
+  theme: PropTypes.object.isRequired,
 }
 
 export default Navbar

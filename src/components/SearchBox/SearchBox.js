@@ -1,21 +1,11 @@
 import React, { Component } from 'react'
-import { TextInput } from 'react-native'
+import { TextInput, Animated } from 'react-native'
 import styled from 'styled-components/native'
 import IconButton from '../IconButton'
 import { COLOR } from '../../assets'
 import Theme from '../../config/theme'
 
 const { PRIMARY } = Theme.COLOR
-
-const SearchView = styled.View`
-  flex-direction: row;
-  height: 48px;
-  background-color: white;
-  padding-top: ${props => props.keyboard ? '8' : '3' }px;
-  padding-left: 15px;
-  padding-right: 15px;
-  padding-bottom: ${props => props.keyboard ? '8' : '13' }px;
-`
 
 const SearchViewInput = styled.View`
   flex-direction: row;
@@ -36,19 +26,55 @@ const CancelSearchView = styled.TouchableOpacity`
 `
 
 const CancelSearchText = styled.Text`
-  color: ${PRIMARY};
+  color: ${props => props.color || PRIMARY};
   font-size: 16px;
 `
 
-const CancelSearch = ({ title, onPress }) => (
+const CancelSearch = ({ title, onPress, color }) => (
   <CancelSearchView onPress={onPress}>
-    <CancelSearchText>{title}</CancelSearchText>
+    <CancelSearchText color={color}>{title}</CancelSearchText>
   </CancelSearchView>
 )
 
-
+const styles = {
+  aniamtedView: (keyboard, animatedValue) => ({
+    flexDirection: 'row',
+    height: animatedValue || 0,
+    backgroundColor: 'white',
+    paddingTop: keyboard ? 8 : 3,
+    paddingLeft: 15,
+    paddingRight: 15,
+    paddingBottom: keyboard ? 8 : 13
+  })
+}
 
 export default class SearchBox extends Component {
+  constructor() {
+    super()
+
+    this.state = {
+      delay: true,
+      animated: new Animated.Value(0)
+    }
+  }
+
+  componentDidMount() {
+    this.animatedStart()
+    setTimeout(() => {
+      this.setState({ delay: false})
+    }, 500)
+  }
+
+  animatedStart() {
+    const { animated } = this.state
+    Animated.timing(
+      animated, {
+      toValue: 48,
+      duration: 500,
+    }, {
+      useNativeDriver: true
+    }).start()
+  }
 
   handleKeyword(value) {
     this.props.onChangeText(value)
@@ -64,9 +90,10 @@ export default class SearchBox extends Component {
   }
 
   render() {
-    const { keyboard, isValue } = this.props
+    const { animated, delay } = this.state 
+    const { keyboard, isValue, theme } = this.props
     return (
-      <SearchView keyboard={keyboard}>
+      <Animated.View style={styles.aniamtedView(keyboard, animated)}>
         <SearchViewInput>
           <TextInput 
             ref={(c) => { this.searchBox = c }}
@@ -90,9 +117,13 @@ export default class SearchBox extends Component {
           }
         </SearchViewInput>
         {
-          keyboard && <CancelSearch title='Cancel' onPress={() => this.handleKeyboard(false)} />
+          keyboard && !delay && 
+            <CancelSearch 
+              title='Cancel' 
+              color={theme.PRIMARY}
+              onPress={() => this.handleKeyboard(false)} />
         }        
-      </SearchView>
+      </Animated.View>
     )
   }
 }

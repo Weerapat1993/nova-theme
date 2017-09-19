@@ -3,11 +3,11 @@ import { TouchableOpacity, Text } from 'react-native'
 import styles from './styles'
 import { COLOR } from '../../assets'
 
-const ThemeColor = ({ title, color, onPress }) => (
+const ThemeColor = ({ title, color, textColor, onPress }) => (
   <TouchableOpacity 
     onPress={onPress}
     style={[styles.colorView, styles.backgroundColor(color)]}>
-    <Text style={styles.color(COLOR.WHITE)}>{title}</Text>
+    <Text style={styles.color(textColor || COLOR.WHITE)}>{title}</Text>
   </TouchableOpacity>
 )
 

@@ -21,12 +21,12 @@ export default {
     color: COLOR.WHITE,
     fontSize: 20,
   },
-  navbarView: height => ({
+  navbarView: (height, color) => ({
     width: '100%',
     height,
     alignItems: 'center',
     paddingHorizontal: 15,
-    backgroundColor: PRIMARY,
+    backgroundColor: color || PRIMARY,
     flexDirection: 'row',
   }),
 }
