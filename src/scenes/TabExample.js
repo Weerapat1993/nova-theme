@@ -4,6 +4,9 @@ import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
 import { Actions } from 'react-native-router-flux'
 import { Navbar, IconButton } from '../components'
 import { COLOR } from '../assets'
+import Theme from '../config/theme'
+
+const theme = Theme.getColor() 
 
 const FirstRoute = () => <View style={[ styles.container, { backgroundColor: '#ff4081' } ]} />;
 const SecondRoute = () => <View style={[ styles.container, { backgroundColor: '#673ab7' } ]} />;
@@ -66,6 +69,7 @@ export default class TabViewExample extends PureComponent {
     return (
       <Navbar
         title='Title'
+        theme={theme}
         menuLeft={menuLeft}
         menuRight={menuRight}
       >
