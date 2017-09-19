@@ -4,7 +4,7 @@ import { View } from 'react-native'
 
 const styles = {
   paragraphView: {
-    padding: 15
+    padding: 20,
   }
 }
  

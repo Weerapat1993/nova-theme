@@ -27,5 +27,8 @@ export default {
   }),
   color: (color) => ({
     color
-  })
+  }),
+  fontSize: (size) => ({
+    fontSize: size || 16
+  }),
 }
