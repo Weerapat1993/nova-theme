@@ -8,6 +8,7 @@ import { Tabbar, TabbarComponent } from './Tabbar'
 import Paragraph from './Paragraph'
 import Flex from './Flex'
 import Image from './Image'
+import Icon from './Icon'
 
 export {
   Button,
@@ -21,4 +22,5 @@ export {
   Paragraph,
   Flex,
   Image,
+  Icon,
 }

@@ -105,7 +105,6 @@ const ButtonTab = ({ theme }) => (
     <FloatingButton 
       name='contacts'
       color={theme.PRIMARY}
-      outline
       onPress={() => alert('Floating Button')}
     />
   </Flex>

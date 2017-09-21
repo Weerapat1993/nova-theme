@@ -8,6 +8,7 @@ const styles = {
     position: 'absolute',
     bottom: 25,
     right: 15,
+    zIndex: 2000,
   }
 }
 

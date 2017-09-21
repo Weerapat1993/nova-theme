@@ -11,7 +11,7 @@ import {
 import { COLOR } from '../../assets'
 import Theme from '../../config/theme'
 import ThemeColor from './ThemeColor'
-import { ButtonTab, FontTab, ContentTab } from './tabs'
+import { ButtonTab, FontTab, ContentTab, IconTab } from './tabs'
 
 class HomeScene extends Component {
   constructor() {
@@ -97,7 +97,7 @@ class HomeScene extends Component {
           <TabbarComponent title='Button' component={ButtonTab} />
           <TabbarComponent title='Fonts' component={FontTab} />
           <TabbarComponent title='Content' component={ContentTab} />
-          <TabbarComponent title='Fourth' component={FontTab} />
+          <TabbarComponent title='Icon' component={IconTab} />
           <TabbarComponent title='Fifth' component={FontTab} />
         </Tabbar>
         <Flex row>
