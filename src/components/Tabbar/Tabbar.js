@@ -1,12 +1,15 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Animated, Dimensions } from 'react-native'
-import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures'
+import Swipeable from 'react-native-swipeable'
 import styles from './styles'
 import TabbarHeader from './TabbarHeader'
 import Flex from '../Flex'
 
-const { SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT } = swipeDirections
+const whiteContent = <Flex size={1} />
+const SWIPE_LEFT = 'SWIPE_LEFT'
+const SWIPE_RIGHT = 'SWIPE_RIGHT'
+
 const leftValue = (total, active) => {
   const { width } = Dimensions.get('window')
   return Math.floor((width / total) * active)
@@ -21,8 +24,10 @@ class Tabbar extends Component {
       underlinePosition: new Animated.Value(0),
       orientation: 'PORTRAIT',
       tabActive: 0,
+      swipe: SWIPE_LEFT,
     }
 
+    this.animateSwipe = new Animated.Value(1)
     this.handleOrientation = this.handleOrientation.bind(this)
     this.handleTab = this.handleTab.bind(this)
   }
@@ -31,7 +36,18 @@ class Tabbar extends Component {
     const { tabActive } = this.state
     if(tabActive !== prevState.tabActive) {
       this.animated(tabActive)
+      this.animate()
     }
+  }
+
+  animate() {
+    this.animateSwipe.setValue(0)
+    Animated.timing(this.animateSwipe, {
+      toValue: 1,
+      duration: 500,
+    }, {
+      useNativeDriver: true
+    }).start()
   }
 
   animated(tabActive) {
@@ -56,21 +72,25 @@ class Tabbar extends Component {
   }
 
   handleTab(tabActive) {
-    this.setState({ tabActive })
+    if(tabActive > this.state.tabActive) {
+      this.setState({ tabActive, swipe: SWIPE_RIGHT })
+    } else {
+      this.setState({ tabActive, swipe: SWIPE_LEFT })
+    }
   }
 
-  onSwipe(direction, gestureState) {
+  onSwipe(direction) {
     const { tabActive, total } = this.state
-    if (direction && direction !== SWIPE_UP && direction !== SWIPE_DOWN) {
+    if (direction) {
       switch (direction) {
         case SWIPE_LEFT:
           if(tabActive) {
-            this.setState({ tabActive: tabActive - 1 })
+            this.setState({ tabActive: tabActive - 1, swipe: SWIPE_LEFT })
           }
           break;
         case SWIPE_RIGHT:
           if(tabActive < total - 1) {
-            this.setState({ tabActive: tabActive + 1 })
+            this.setState({ tabActive: tabActive + 1, swipe: SWIPE_RIGHT })
           }
           break;
         default:
@@ -79,12 +99,14 @@ class Tabbar extends Component {
   }
 
   render () {
-    const config = {
-      velocityThreshold: 0.3,
-      directionalOffsetThreshold: 80
-    }
-    const { tabActive } = this.state
+    const { tabActive, swipe } = this.state
     const { children, theme, isSwipe } = this.props
+    const { width } = Dimensions.get('window')
+    const checkDirection = swipe === SWIPE_RIGHT ? 1 : -1
+    const animated = this.animateSwipe.interpolate({
+      inputRange: [0, 1],
+      outputRange: [(width * checkDirection), 0]
+    })
     return (
       <Flex size={1}>
         <TabbarHeader 
@@ -95,10 +117,11 @@ class Tabbar extends Component {
         />
         {
           isSwipe ? 
-            <GestureRecognizer
-              onSwipeLeft={state => this.onSwipe(SWIPE_LEFT, state)}
-              onSwipeRight={state => this.onSwipe(SWIPE_RIGHT, state)}
-              config={config}
+            <Swipeable
+              leftContent={whiteContent}
+              rightContent={whiteContent}
+              onLeftActionRelease={() => this.onSwipe(SWIPE_LEFT)}
+              onRightActionRelease={() => this.onSwipe(SWIPE_RIGHT)}
               style={styles.flex}
             >
               {
@@ -106,19 +129,23 @@ class Tabbar extends Component {
                   const Components = child.props.component
                   if(tabActive !== key) return null 
                   return (
-                    <Components {...child.props} theme={theme} />
+                    <Animated.View style={[ styles.flex, { width, marginLeft: animated }]}>
+                      <Components {...child.props} theme={theme} />
+                    </Animated.View>
                   )
                 })
               }
-            </GestureRecognizer>
+            </Swipeable>
           :
             <Flex size={1}>
               {
                 React.Children.map(children, (child, key) => {
                   const Components = child.props.component
-                  if(tabActive !== key) return null 
+                  if(tabActive !== key) return null
                   return (
-                    <Components {...child.props} theme={theme} />
+                    <Animated.View style={[ styles.flex, { width, marginLeft: animated }]}>
+                      <Components {...child.props} theme={theme} />
+                    </Animated.View>
                   )
                 })
               }

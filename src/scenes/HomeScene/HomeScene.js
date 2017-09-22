@@ -93,7 +93,7 @@ class HomeScene extends Component {
             theme={theme}
           />
         }
-        <Tabbar underlineColor={theme.PRIMARY} theme={theme}>
+        <Tabbar underlineColor={theme.PRIMARY} theme={theme} isSwipe>
           <TabbarComponent title='Button' component={ButtonTab} />
           <TabbarComponent title='Fonts' component={FontTab} />
           <TabbarComponent title='Content' component={ContentTab} />

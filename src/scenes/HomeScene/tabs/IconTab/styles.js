@@ -45,7 +45,7 @@ const styles = {
   alignCenter: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: '#eee',
     aspectRatio: 1,
   },
   textHeader: {
