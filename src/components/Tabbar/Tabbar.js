@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { View, Animated, Dimensions } from 'react-native'
+import { Animated, Dimensions } from 'react-native'
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures'
 import styles from './styles'
-import TabbarItem from './TabbarItem'
+import TabbarHeader from './TabbarHeader'
 import Flex from '../Flex'
 
 const { SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT } = swipeDirections
@@ -83,44 +83,47 @@ class Tabbar extends Component {
       velocityThreshold: 0.3,
       directionalOffsetThreshold: 80
     }
-    const { total, underlinePosition, tabActive } = this.state
-    const { children, bgColor, underlineColor, theme } = this.props
+    const { tabActive } = this.state
+    const { children, theme, isSwipe } = this.props
     return (
       <Flex size={1}>
-        <View 
-          onLayout={this.handleOrientation}
-          style={styles.tabbarContainer(bgColor)}>
-          {
-            React.Children.map(children, (child, key) => {
-              const { title } = child.props
-              return (
-                <TabbarItem 
-                  key={key} 
-                  textColor={tabActive === key ? underlineColor : null} 
-                  title={title} 
-                  onPress={() => this.handleTab(key)} 
-                />
-              )
-            })
-          }
-          <Animated.View style={styles.tabbarStick(total, underlinePosition, underlineColor)} />
-        </View>
-        <GestureRecognizer
-          onSwipeLeft={state => this.onSwipe(SWIPE_LEFT, state)}
-          onSwipeRight={state => this.onSwipe(SWIPE_RIGHT, state)}
-          config={config}
-          style={styles.flex}
-        >
-          {
-            React.Children.map(children, (child, key) => {
-              const Components = child.props.component
-              if(tabActive !== key) return null 
-              return (
-                <Components {...child.props} theme={theme} />
-              )
-            })
-          }
-        </GestureRecognizer>
+        <TabbarHeader 
+          {...this.props} 
+          {...this.state} 
+          onPress={this.handleTab} 
+          onLayout={this.handleOrientation} 
+        />
+        {
+          isSwipe ? 
+            <GestureRecognizer
+              onSwipeLeft={state => this.onSwipe(SWIPE_LEFT, state)}
+              onSwipeRight={state => this.onSwipe(SWIPE_RIGHT, state)}
+              config={config}
+              style={styles.flex}
+            >
+              {
+                React.Children.map(children, (child, key) => {
+                  const Components = child.props.component
+                  if(tabActive !== key) return null 
+                  return (
+                    <Components {...child.props} theme={theme} />
+                  )
+                })
+              }
+            </GestureRecognizer>
+          :
+            <Flex size={1}>
+              {
+                React.Children.map(children, (child, key) => {
+                  const Components = child.props.component
+                  if(tabActive !== key) return null 
+                  return (
+                    <Components {...child.props} theme={theme} />
+                  )
+                })
+              }
+            </Flex>
+        }
       </Flex>
     )
   }
@@ -129,6 +132,7 @@ class Tabbar extends Component {
 Tabbar.defaultProps = {
   bgColor: null,
   underlineColor: null,
+  isSwipe: false,
 }
 
 Tabbar.propTypes = {
@@ -136,6 +140,7 @@ Tabbar.propTypes = {
   bgColor: PropTypes.string,
   underlineColor: PropTypes.string,
   theme: PropTypes.object.isRequired,
+  isSwipe: PropTypes.bool,
 }
 
 export default Tabbar

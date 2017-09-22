@@ -27,6 +27,9 @@ export default {
     justifyContent: 'center',
     alignItems: 'center',
   },
+  bgColor: (color) => ({
+    backgroundColor: color
+  }),
   color: (color) => ({
     color
   }),
