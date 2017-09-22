@@ -1,11 +1,11 @@
 import React from 'react'
 import { ScrollView, Text } from 'react-native'
-import styles from '../styles'
+import globalStyles from '../../../config/globalStyles'
 import { COLOR } from '../../../assets'
 import { Paragraph, TextHeader } from '../../../components'
 
 const FontTab = ({ theme }) => (
-  <ScrollView style={styles.backgroundColor(COLOR.WHITE)}>
+  <ScrollView style={globalStyles.bgColor(COLOR.WHITE)}>
     <Paragraph>
       <Text>Font Tab</Text>
     </Paragraph>

@@ -2,12 +2,13 @@ import React from 'react'
 import { View, ScrollView, Text } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import styles from '../styles'
+import globalStyles from '../../../config/globalStyles'
 import { COLOR } from '../../../assets'
 import { Paragraph, Button, IconButton, FloatingButton, Flex } from '../../../components'
 
 const ButtonTab = ({ theme }) => (
   <Flex size={1}>
-    <ScrollView style={styles.backgroundColor(COLOR.WHITE)}>
+    <ScrollView style={globalStyles.bgColor(COLOR.WHITE)}>
       <Paragraph>
         <Text>Button Tab</Text>
       </Paragraph>

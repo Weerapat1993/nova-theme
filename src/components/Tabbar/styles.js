@@ -28,7 +28,7 @@ export default {
     alignItems: 'center',
   },
   bgColor: (color) => ({
-    backgroundColor: color
+    backgroundColor: color || 'transparent'
   }),
   color: (color) => ({
     color

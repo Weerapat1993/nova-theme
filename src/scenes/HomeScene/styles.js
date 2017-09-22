@@ -22,13 +22,4 @@ export default {
     justifyContent: 'center',
     height: 60
   },
-  backgroundColor: (color) => ({
-    backgroundColor: color
-  }),
-  color: (color) => ({
-    color
-  }),
-  fontSize: (size) => ({
-    fontSize: size || 16
-  }),
 }
