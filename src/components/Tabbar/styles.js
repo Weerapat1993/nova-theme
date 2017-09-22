@@ -35,5 +35,8 @@ export default {
   }),
   flex: {
     flex: 1,
-  }
+  },
+  marginTop: (value) => ({
+    marginTop: value
+  })
 }
