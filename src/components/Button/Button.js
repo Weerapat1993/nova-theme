@@ -12,6 +12,14 @@ import styles from './styles'
 import { COLOR } from '../../assets'
 
 class Button extends Component {
+  constructor() {
+    super()
+
+    this.state = {
+      press: false
+    }
+  }
+
   renderLoading() {
     const { color, flat, outline, disabled } = this.props
     if(disabled) {
@@ -37,10 +45,20 @@ class Button extends Component {
       disabled, 
       iconSize,
     } = this.props
+    const { press } = this.state
+    if(disabled && (flat || outline)) {
+      return (
+        <VectorIcon 
+          name={icon}
+          color={'rgba(255,255,255,0.5)'}
+          size={iconSize}
+        />
+      )
+    } 
     return (
       <VectorIcon 
         name={icon}
-        color={flat || outline ? color : disabled ? COLOR.DISABLED : COLOR.WHITE }
+        color={flat || outline || press ? color : disabled ? COLOR.DISABLED : COLOR.WHITE }
         size={iconSize}
       />
     )
@@ -61,14 +79,17 @@ class Button extends Component {
       isHighlight,
       padding,
       style,
+      textColor,
     } = this.props
     const Touchable = flat && isHighlight ? TouchableHighlight : TouchableOpacity
     if(!disabled) {
       return (
         <Touchable 
           style={[styles.buttonView(color, rounded, flat, outline, padding), style]} 
-          underlayColor='#eee'
+          underlayColor='rgba(255,255,255,0.5)'
           onPress={onPress}
+          onShowUnderlay={() => this.setState({ press: true })}
+          onHideUnderlay={() => this.setState({ press: false })}
           >
           <View style={styles.buttonTextRow}>
             { loading && !icon && iconPosition === 'left' && this.renderLoading() }
@@ -86,14 +107,14 @@ class Button extends Component {
       )
     }
     return (
-      <View style={[styles.buttonView('#eee', rounded, flat, outline, padding), style]} >
+      <View style={[styles.buttonView('rgba(255,255,255,0.5)', rounded, flat, outline, padding), style]} >
         <View style={styles.buttonTextRow}>
           { loading && !icon && iconPosition === 'left' && this.renderLoading() }
           { icon && !loading && iconPosition === 'left' && this.renderIcon() }
           { 
             title && 
               <View style={styles.marginHorizontal(10)}>
-                <Text style={styles.buttonDisableText}>{title}</Text>
+                <Text style={styles.buttonDisableText(outline)}>{title}</Text>
               </View>
           }
           { loading && !icon && iconPosition === 'right' && this.renderLoading() }
@@ -134,7 +155,10 @@ Button.propTypes = {
   isHighlight: PropTypes.bool,
   iconSize: PropTypes.number,
   padding: PropTypes.number,
-  style: PropTypes.object,
+  style: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array,
+  ]),
 }
 
 export default Button

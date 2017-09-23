@@ -11,8 +11,8 @@ const styles = {
   })
 }
 
-const Flex = ({ row, column, children, size, align, bgColor }) => (
-  <View style={styles.flex(row, size, align, bgColor)}>
+const Flex = ({ row, column, children, size, align, bgColor, style }) => (
+  <View style={[styles.flex(row, size, align, bgColor), style]}>
     {children}
   </View>
 )
@@ -22,7 +22,8 @@ Flex.defaultProps = {
   column: false,
   size: 0,
   align: 'flex-start',
-  bgColor: 'white'
+  bgColor: 'white',
+  style: {},
 }
 
 Flex.propTypes = {
@@ -31,7 +32,11 @@ Flex.propTypes = {
   children: PropTypes.node,
   size: PropTypes.number,
   align: PropTypes.string,
-  bgColor: PropTypes.string
+  bgColor: PropTypes.string,
+  style: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array,
+  ]),
 }
 
 export default Flex

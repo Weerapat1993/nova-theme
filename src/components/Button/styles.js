@@ -22,11 +22,13 @@ export default {
   buttonText: (color, flat, outline) => ({
     color: (flat || outline) ? color : WHITE
   }),
-  buttonDisableText: {
-    color: GREY,
-  },
+  buttonDisableText: (outline) => ({
+    color: outline ? 'rgba(255,255,255,0.5)' : GREY,
+  }),
   buttonTextRow: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   marginRight: (value) => ({
     marginRight: value

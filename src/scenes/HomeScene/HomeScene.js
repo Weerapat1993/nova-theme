@@ -58,12 +58,12 @@ class HomeScene extends Component {
     const { keyboard, theme, keyword } = this.state
     const menuLeft = (
       <IconButton 
-        name='keyboard-backspace'
+        name='lock'
         color={COLOR.WHITE}
         flat
         isHighlight={false}
         iconSize={24}
-        onPress={() => Actions.pop()}
+        onPress={() => Actions.login()}
       />
     )
     const menuRight = (

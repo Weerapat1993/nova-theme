@@ -4,6 +4,8 @@ export const initalTheme = {
   COLOR: {
     PRIMARY: '#39C',
     DEFAULT: '#eee',
+    WHITE: '#fff',
+    BLACK: '#333',
   },
   STATUS_BAR: {
     HEIGHT: Platform.OS === 'ios' ? 0 : 24
