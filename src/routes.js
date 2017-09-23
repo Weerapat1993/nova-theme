@@ -6,7 +6,7 @@ import {
   TabExample,
 } from './scenes'
 
-const App = () => (
+const Routes = () => (
   <Router>
     <Scene key="root">
       <Scene key="home" component={HomeScene} hideNavBar />
@@ -16,4 +16,4 @@ const App = () => (
   </Router>
 )
 
-export default App
+export default Routes
