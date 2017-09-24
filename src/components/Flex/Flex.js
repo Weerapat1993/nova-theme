@@ -22,7 +22,7 @@ Flex.defaultProps = {
   column: false,
   size: 0,
   align: 'flex-start',
-  bgColor: 'white',
+  bgColor: 'transparent',
   style: {},
 }
 

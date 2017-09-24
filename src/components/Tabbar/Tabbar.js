@@ -6,7 +6,7 @@ import styles from './styles'
 import TabbarHeader from './TabbarHeader'
 import Flex from '../Flex'
 
-const whiteContent = <Flex size={1} />
+const whiteContent = <Flex size={1} bgColor='white' />
 const SWIPE_LEFT = 'SWIPE_LEFT'
 const SWIPE_RIGHT = 'SWIPE_RIGHT'
 
@@ -100,7 +100,7 @@ class Tabbar extends Component {
 
   render () {
     const { tabActive, swipe } = this.state
-    const { children, theme, isSwipe } = this.props
+    const { children, theme, isSwipe, bgColor } = this.props
     const { width } = Dimensions.get('window')
     const checkDirection = swipe === SWIPE_RIGHT ? 1 : -1
     const animated = this.animateSwipe.interpolate({
@@ -122,7 +122,7 @@ class Tabbar extends Component {
               rightContent={whiteContent}
               onLeftActionRelease={() => this.onSwipe(SWIPE_LEFT)}
               onRightActionRelease={() => this.onSwipe(SWIPE_RIGHT)}
-              style={styles.flex}
+              style={[styles.flex, styles.bgColor(bgColor)]}
             >
               {
                 React.Children.map(children, (child, key) => {
@@ -137,7 +137,7 @@ class Tabbar extends Component {
               }
             </Swipeable>
           :
-            <Flex size={1}>
+            <Flex size={1} bgColor={bgColor}>
               {
                 React.Children.map(children, (child, key) => {
                   const Components = child.props.component
