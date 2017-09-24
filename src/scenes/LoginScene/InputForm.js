@@ -1,7 +1,7 @@
 //import liraries
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { View, TextInput, Animated } from 'react-native'
+import { View, TextInput, Animated, Platform } from 'react-native'
 import { IconButton } from '../../components'
 import MessageError from './MessageError'
 
@@ -16,10 +16,14 @@ const styles = {
     color, 
     fontSize: 13,
   }),
-  inputStyle: (color) => ({
+  inputStyle: (color, focus) => ({
     paddingHorizontal: 5,
-    paddingVertical: 10,
-    color
+    // paddingVertical: 10,
+    paddingTop: 10,
+    paddingBottom: Platform.OS === 'ios' ? 5 : 0,
+    color,
+    borderBottomWidth: focus ? 2 : 1,
+    borderBottomColor: color
   }),
   viewInput: {
     paddingHorizontal: 15,
@@ -117,7 +121,7 @@ class InputForm extends Component {
 
   render() {
     const { input, label, placeholder, themeColor, meta: { touched, error, warning } } = this.props
-    const { secureTextEntry, password } = this.state
+    const { secureTextEntry, password, focus } = this.state
     return (
       <View>
         <Animated.View style={styles.viewLabel(this.animatePosition)}>
@@ -141,11 +145,11 @@ class InputForm extends Component {
             secureTextEntry={secureTextEntry}
             placeholderStyle={styles.placeholderStyle(themeColor)}
             placeholderTextColor={themeColor}
-            style={styles.inputStyle(themeColor)}
+            style={styles.inputStyle(themeColor, focus)}
             onChangeText={(value) => this.setState({ value })}
             onFocus={() => this.setState({ focus: true })}
             onBlur={() => this.setState({ focus: false })}
-            underlineColorAndroid={themeColor}
+            underlineColorAndroid='transparent'
           />
           {
             touched && (

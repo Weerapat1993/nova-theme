@@ -21,14 +21,20 @@ export const authFailure = (error) => ({
 
 export const auth = (body) => (dispatch, getState) => {
   dispatch(authRequest())
-  return axios.post(API_ENDPOINT_AUTH_LOGIN, body)
+  return fetch(API_ENDPOINT_AUTH_LOGIN, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(body)
+  })
+    .then(res => res.json())
     .then(res => {
-      const token = res.data.token
-      localStorage.setItem('jwtToken', token)
-      // setAuthorizationToken(token)
-      return dispatch(authSuccess(res.data))
+      const token = res.token
+      setJWTToken(token)
+      return dispatch(authSuccess(res))
     })
-    .catch(error => dispatch(authFailure(error)))
+    .catch(error => dispatch(authFailure(error)))    
 }
 
 export const getUserWithToken = (token) => (dispatch, getState) => {
@@ -48,12 +54,15 @@ export const authLogout = () => ({
   type: AUTH_LOGOUT
 })
 
+export const setJWTToken = (token) => (dispatch, getState) => {
+  return AsyncStorage.setItem('jwtToken', token)
+    .then(() => null)
+}
+
 export const removeJWTToken = () => (dispatch, getState) => {
   return AsyncStorage.removeItem('jwtToken')
     .then(() => dispatch(authLogout()))
 }
-
-
 
 export const authClearError = () => ({
   type: AUTH_CLEAR_ERROR

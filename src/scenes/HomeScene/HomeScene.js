@@ -1,5 +1,9 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { Actions } from 'react-native-router-flux'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { authActions } from '../../redux/auth'
 import {
   IconButton, 
   Navbar, 
@@ -26,6 +30,7 @@ class HomeScene extends Component {
     this.searchValue = this.searchValue.bind(this)
     this.handleKeyword = this.handleKeyword.bind(this)
     this.handleKeyboard = this.handleKeyboard.bind(this)
+    this.authLogout = this.authLogout.bind(this)
   }
 
   handleKeyword(keyword) {
@@ -43,6 +48,10 @@ class HomeScene extends Component {
     }
   }
 
+  authLogout() {
+    this.props.authActions.removeJWTToken()
+  }
+
   setTheme(color) {
     const { theme } = this.state
     Theme.setColorPrimary(color)
@@ -56,14 +65,15 @@ class HomeScene extends Component {
 
   render() {
     const { keyboard, theme, keyword } = this.state
+    const { auth } = this.props
     const menuLeft = (
       <IconButton 
-        name='lock'
+        name={auth.isAuth ? 'compare-arrows' : 'lock'}
         color={COLOR.WHITE}
         flat
         isHighlight={false}
         iconSize={24}
-        onPress={() => Actions.login()}
+        onPress={auth.isAuth ? this.authLogout : Actions.login}
       />
     )
     const menuRight = (
@@ -78,7 +88,7 @@ class HomeScene extends Component {
     )
     return (
       <Navbar
-        title='Title'
+        title={auth.user.name}
         theme={theme}
         menuLeft={menuLeft}
         menuRight={menuRight}
@@ -111,5 +121,20 @@ class HomeScene extends Component {
   }
 } 
 
+const mapStateToProps = (state, ownProps) => ({
+  auth: state.auth
+})
 
-export default HomeScene
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  authActions: bindActionCreators(authActions ,dispatch)
+})
+
+HomeScene.propTypes = {
+  auth: PropTypes.object.isRequired,
+  authActions: PropTypes.object.isRequired,
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(HomeScene)

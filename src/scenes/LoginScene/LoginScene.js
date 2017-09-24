@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { View, Text, KeyboardAvoidingView } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { connect } from 'react-redux'
@@ -8,6 +9,7 @@ import { Flex, Icon, IconButton } from '../../components'
 import LoginForm from './LoginForm'
 import Theme from '../../config/theme'
 import globalStyles from '../../config/globalStyles'
+import AlertDialog from './AlertDialog'
 
 const { STATUS_BAR } = Theme
 
@@ -45,6 +47,13 @@ class LoginScene extends Component {
     this.handleClearError = this.handleClearError.bind(this)
   }
 
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.auth.isAuth) {
+      alert('LOGIN SUCCESS')
+      Actions.pop()
+    }
+  }
+
   handleClearError() {
     this.props.authActions.authClearError()
   }
@@ -56,14 +65,19 @@ class LoginScene extends Component {
       dispatch(authActions.auth(values))
     } 
   }
+
   render() {
     const { theme, behavior } = this.state
     const { auth } = this.props
-    if(auth.error) {
-      alert(auth.error)
-    }
     return (
       <Flex size={1} bgColor={theme.PRIMARY} style={globalStyles.padding(15)}>
+        { 
+          auth.error && 
+            <AlertDialog
+              message={auth.error}
+              actionButton={[{ text: 'ตกลง', onPress: this.handleClearError }]}
+            /> 
+        }
         <View style={styles.backMenu}>
           <IconButton 
             name='keyboard-backspace'
@@ -97,6 +111,11 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = (dispatch, ownProps) => ({
   authActions: bindActionCreators(authActions ,dispatch)
 })
+
+LoginScene.propTypes = {
+  auth: PropTypes.object.isRequired,
+  authActions: PropTypes.object.isRequired,
+}
 
 export default connect(
   mapStateToProps,

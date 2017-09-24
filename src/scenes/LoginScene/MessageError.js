@@ -5,6 +5,7 @@ import { Animated } from 'react-native'
 const styles = {
   errorView: (height) => ({
     paddingHorizontal: 5,
+    marginTop: 5,
     height,
   }),
   errorText: (color, opacity) => ({

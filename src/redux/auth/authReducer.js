@@ -3,7 +3,7 @@ import { AUTH, AUTH_LOGOUT, AUTH_CLEAR_ERROR } from './authActionTypes'
 export const initalState = {
   isAuth: false,
   isLoading: false,
-  user: false,
+  user: {},
   error: false,
 }
 
