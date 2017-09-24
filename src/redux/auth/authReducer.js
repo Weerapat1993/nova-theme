@@ -1,10 +1,10 @@
-import { AUTH } from './authActionTypes'
+import { AUTH, AUTH_LOGOUT, AUTH_CLEAR_ERROR } from './authActionTypes'
 
 export const initalState = {
-  users: null,
-  token: null,
-  isFetching: false,
-  error: false
+  isAuth: false,
+  isLoading: false,
+  user: false,
+  error: false,
 }
 
 export const authReducer = (state = initalState, action) => {
@@ -15,26 +15,37 @@ export const authReducer = (state = initalState, action) => {
       return reducerAuthSuccess(state, action)
     case AUTH.FAILURE:
       return reducerAuthFailure(state, action)
-    default: 
+    case AUTH_CLEAR_ERROR:
+      return reducerAuthClearError(state, action)
+    case AUTH_LOGOUT:
+      return initalState
+    default:
       return state
   }
 }
 
+// AUTH -----------------------------------------------------------------
 export const reducerAuthRequest = (state, action) => ({
   ...state,
-  isFetching: true,
+  isLoading: true,
   error: false,
 })
 
 export const reducerAuthSuccess = (state, action) => ({
-  users: action.payload,
-  token: action.token,
-  isFetching: false,
+  ...state,
+  isAuth: true,
+  isLoading: false,
+  user: action.payload.user,
   error: false,
 })
 
 export const reducerAuthFailure = (state, action) => ({
   ...state,
-  isFetching: true,
-  error: action.error,
+  isLoading: false,
+  error: action.error
+})
+
+export const reducerAuthClearError = (state, action) => ({
+  ...state,
+  error: false,
 })

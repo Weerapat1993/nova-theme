@@ -1,9 +1,15 @@
 import React, { Component } from 'react'
 import { View, Text, KeyboardAvoidingView } from 'react-native'
-import { Flex, Icon } from '../../components'
+import { Actions } from 'react-native-router-flux'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { authActions } from '../../redux/auth'
+import { Flex, Icon, IconButton } from '../../components'
 import LoginForm from './LoginForm'
 import Theme from '../../config/theme'
 import globalStyles from '../../config/globalStyles'
+
+const { STATUS_BAR } = Theme
 
 const styles = {
   container: {
@@ -17,6 +23,13 @@ const styles = {
   },
   versionView: {
     alignItems: 'flex-end'
+  },
+  backMenu: {
+    marginTop: STATUS_BAR.HEIGHT,
+    position: 'absolute',
+    left: 15,
+    top: 10,
+    zIndex: 200,
   }
 }
 
@@ -29,17 +42,37 @@ class LoginScene extends Component {
       behavior: 'padding',
     }
 
-    this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleClearError = this.handleClearError.bind(this)
   }
 
-  handleSubmit(values, dispatch) {
-    alert(JSON.stringify(values))
+  handleClearError() {
+    this.props.authActions.authClearError()
   }
 
+  handleSubmit(values, dispatch, props) {
+    if(props.isAuth) {
+      alert('User has been Login')
+    } else {
+      dispatch(authActions.auth(values))
+    } 
+  }
   render() {
     const { theme, behavior } = this.state
+    const { auth } = this.props
+    if(auth.error) {
+      alert(auth.error)
+    }
     return (
       <Flex size={1} bgColor={theme.PRIMARY} style={globalStyles.padding(15)}>
+        <View style={styles.backMenu}>
+          <IconButton 
+            name='keyboard-backspace'
+            color={theme.WHITE}
+            flat
+            iconSize={32}
+            onPress={() => Actions.pop()}
+          />  
+        </View>
         <KeyboardAvoidingView behavior={behavior} style={styles.container}>
           <View style={styles.logo}>
             <Icon 
@@ -57,5 +90,15 @@ class LoginScene extends Component {
   }
 }
 
+const mapStateToProps = (state, ownProps) => ({
+  auth: state.auth
+})
 
-export default LoginScene
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  authActions: bindActionCreators(authActions ,dispatch)
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(LoginScene)
