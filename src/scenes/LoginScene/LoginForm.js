@@ -3,10 +3,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Field, reduxForm } from 'redux-form'
 import { View } from 'react-native'
-import { Flex, Button } from '../../components'
+import { Flex, Button, InputForm } from '../../components'
 import { authValidation } from '../../redux/auth'
 import Theme from '../../config/theme'
-import InputForm from './InputForm'
 
 const COLOR = Theme.getColor()
 

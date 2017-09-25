@@ -5,11 +5,10 @@ import { Actions } from 'react-native-router-flux'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { authActions } from '../../redux/auth'
-import { Flex, Icon, IconButton } from '../../components'
+import { Flex, Icon, IconButton, AlertDialog } from '../../components'
 import LoginForm from './LoginForm'
 import Theme from '../../config/theme'
 import globalStyles from '../../config/globalStyles'
-import AlertDialog from './AlertDialog'
 
 const { STATUS_BAR } = Theme
 

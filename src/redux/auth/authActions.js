@@ -31,7 +31,7 @@ export const auth = (body) => (dispatch, getState) => {
     .then(res => res.json())
     .then(res => {
       const token = res.token
-      setJWTToken(token)
+      dispatch(setJWTToken(token))
       return dispatch(authSuccess(res))
     })
     .catch(error => dispatch(authFailure(error)))    
@@ -57,6 +57,17 @@ export const authLogout = () => ({
 export const setJWTToken = (token) => (dispatch, getState) => {
   return AsyncStorage.setItem('jwtToken', token)
     .then(() => null)
+    .catch(error => console.error(error))
+}
+
+export const getJWTToken = () => (dispatch, getState) => {
+  return AsyncStorage.getItem('jwtToken')
+    .then(value => {
+      if(value) {
+        return dispatch(getUserWithToken(value))
+      }
+    })
+    .catch(error => console.error(error))
 }
 
 export const removeJWTToken = () => (dispatch, getState) => {

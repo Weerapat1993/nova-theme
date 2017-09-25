@@ -9,6 +9,11 @@ import Paragraph from './Paragraph'
 import Flex from './Flex'
 import Image from './Image'
 import Icon from './Icon'
+import AlertDialog from './AlertDialog'
+import InputForm from './InputForm'
+
+// High Order Components
+import Authentication from './Authentication'
 
 export {
   Button,
@@ -23,4 +28,7 @@ export {
   Flex,
   Image,
   Icon,
+  AlertDialog,
+  InputForm,
+  Authentication,
 }

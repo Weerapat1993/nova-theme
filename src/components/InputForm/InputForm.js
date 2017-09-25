@@ -2,7 +2,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { View, TextInput, Animated, Platform } from 'react-native'
-import { IconButton } from '../../components'
+import IconButton from '../IconButton'
 import MessageError from './MessageError'
 
 const styles = {

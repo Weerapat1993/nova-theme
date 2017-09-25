@@ -11,6 +11,7 @@ import {
   Tabbar,
   TabbarComponent,
   Flex,
+  Authentication,
 } from '../../components'
 import { COLOR } from '../../assets'
 import Theme from '../../config/theme'
@@ -121,10 +122,6 @@ class HomeScene extends Component {
   }
 } 
 
-const mapStateToProps = (state, ownProps) => ({
-  auth: state.auth
-})
-
 const mapDispatchToProps = (dispatch, ownProps) => ({
   authActions: bindActionCreators(authActions ,dispatch)
 })
@@ -134,7 +131,9 @@ HomeScene.propTypes = {
   authActions: PropTypes.object.isRequired,
 }
 
-export default connect(
-  mapStateToProps,
+const connectComponent = connect(
+  null,
   mapDispatchToProps,
 )(HomeScene)
+
+export default Authentication(connectComponent)
