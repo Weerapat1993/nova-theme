@@ -1,6 +1,7 @@
 import { AUTH, AUTH_LOGOUT, AUTH_CLEAR_ERROR } from './authActionTypes'
 
 export const initalState = {
+  token: null,
   isAuth: false,
   isLoading: false,
   user: {},
@@ -33,6 +34,7 @@ export const reducerAuthRequest = (state, action) => ({
 
 export const reducerAuthSuccess = (state, action) => ({
   ...state,
+  token: action.payload.token,
   isAuth: true,
   isLoading: false,
   user: action.payload.user,

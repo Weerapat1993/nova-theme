@@ -16,7 +16,7 @@ import {
 import { COLOR } from '../../assets'
 import Theme from '../../config/theme'
 import ThemeColor from './ThemeColor'
-import { ButtonTab, FontTab, ContentTab, IconTab } from './tabs'
+import { ButtonTab, FontTab, ContentTab, IconTab, ApiTab } from './tabs'
 
 class HomeScene extends Component {
   constructor() {
@@ -109,7 +109,7 @@ class HomeScene extends Component {
           <TabbarComponent title='Fonts' component={FontTab} />
           <TabbarComponent title='Content' component={ContentTab} />
           <TabbarComponent title='Icon' component={IconTab} />
-          <TabbarComponent title='Fifth' component={FontTab} />
+          <TabbarComponent title='API' component={ApiTab} />
         </Tabbar>
         <Flex row>
           <ThemeColor title='Google Blue' color='#39c' onPress={() => this.setTheme('#39c')} />

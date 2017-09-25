@@ -8,6 +8,7 @@ import {
   API_ENDPOINT_GET_USERS,
   API_ENDPOINT_UPDATE_USERS
 } from '../../config/endpoint'
+import { getToken } from './userFunction'
 
 export const fetchUserRequest = () => ({
   type: FETCH_USER.REQUEST
@@ -24,7 +25,7 @@ export const fetchUserFailure = (error) => ({
 })
 
 export const fetchUser = () => (dispatch, getState) => {
-  let token = localStorage.jwtToken 
+  const token = getToken(getState())
   dispatch(fetchUserRequest())
   return axios.get(`${API_ENDPOINT_GET_USERS}?token=${token}`)
     .then(res => dispatch(fetchUserSuccess(res.data.data)))

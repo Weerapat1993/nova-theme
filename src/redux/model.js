@@ -1,4 +1,4 @@
-import Collection from './collection'
+import { Collection } from '../utils'
 // import { Fillable } from '../utils'
 
 const Model = (data, primaryKey) => new Collection(data, primaryKey)

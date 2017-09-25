@@ -13,7 +13,7 @@ import AlertDialog from './AlertDialog'
 import InputForm from './InputForm'
 
 // High Order Components
-import Authentication from './Authentication'
+import { Authentication, AuthComponent } from './Authentication'
 
 export {
   Button,
@@ -31,4 +31,5 @@ export {
   AlertDialog,
   InputForm,
   Authentication,
+  AuthComponent,
 }

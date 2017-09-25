@@ -1,3 +1,7 @@
 import Authentication from './Authentication'
+import AuthComponent from './AuthComponent'
 
-export default Authentication
+export {
+  Authentication,
+  AuthComponent,
+}
