@@ -6,28 +6,48 @@ import { bindActionCreators } from 'redux'
 import { userActions } from '../../../redux/user'
 import globalStyles from '../../../config/globalStyles'
 import { COLOR } from '../../../assets'
-import { Paragraph, TextHeader, AuthComponent } from '../../../components'
+import { Paragraph, TextHeader, AuthComponent, Flex, Icon } from '../../../components'
 
+const styles = {
+  dataNotFound: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+}
 
 class ApiTab extends Component {
   componentDidMount() {
-    this.props.userActions.fetchUser()
+    const { users } = this.props
+    if(!users.length) {
+      this.props.userActions.fetchUser()
+    }
   }
 
   render () {
     const { theme, users, isFetching } = this.props
     return (
-      <ScrollView style={globalStyles.bgColor(COLOR.WHITE)}>
-        <Paragraph>
-          <TextHeader title='API Tab' size={24} color={theme.PRIMARY} />
-          {
-            isFetching ? <ActivityIndicator />
-            : users.map((item, key) => (
-              <Text key={key}>{item.name}</Text>
-            ))
-          }
-        </Paragraph>
-      </ScrollView>
+      <Flex size={1} bgColor={COLOR.WHITE}>
+        { isFetching && <ActivityIndicator /> }
+        {
+          !users.length && !isFetching ? 
+          <Flex size={1} style={styles.dataNotFound}>
+            <Icon name='highlight-off' size={128} color={theme.DISABLED} />
+            <Text style={globalStyles.color(theme.DISABLED)}>Data is not Found.</Text>
+          </Flex>
+          : 
+          <ScrollView>
+            <Paragraph>
+              <TextHeader title='API Tab' size={24} color={theme.PRIMARY} />
+              {
+                users.map((item, key) => (
+                  <Text key={key}>{item.name || 'null'}</Text>
+                ))
+              }
+            </Paragraph>
+          </ScrollView>
+        }
+      </Flex>
     )
   }
 }

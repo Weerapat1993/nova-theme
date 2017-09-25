@@ -6,6 +6,7 @@ const styles = {
   paragraphView: (align) => ({
     padding: 20,
     alignItems: align || 'flex-start',
+    width: '100%',
   })
 }
  
@@ -14,8 +15,6 @@ const Paragraph = ({ children, align }) => (
     { children }
   </View>
 )
-
-
 
 Paragraph.propTypes = {
   children: PropTypes.node,
