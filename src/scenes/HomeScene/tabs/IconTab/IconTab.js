@@ -65,12 +65,13 @@ class IconTab extends Component {
               <View key={i} style={styles.child}>
                 <View style={styles.alignCenter}>
                   <View style={styles.hederView}>
-                    <Icon
-                      name={item}
-                      color={theme.PRIMARY}
-                      iconTheme={iconTheme}
-                      style={{ transform: [{ rotate: spin }] }}
-                    />
+                    <Animated.View style={{ transform: [{ rotate: spin }] }}>
+                      <Icon
+                        name={item}
+                        color={theme.PRIMARY}
+                        iconTheme={iconTheme}
+                      />
+                    </Animated.View>
                   </View>
                   <Text>{item}</Text>
                 </View>

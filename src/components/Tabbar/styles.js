@@ -22,11 +22,12 @@ export default {
     width: `${100 / total}%`,
     height: 3,
   }),
-  tabbarItemView: {
+  tabbarItemView: (width) => ({
+    width,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
+  }),
   bgColor: (color) => ({
     backgroundColor: color || 'transparent'
   }),

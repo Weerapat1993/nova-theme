@@ -118,8 +118,8 @@ class Tabbar extends Component {
         {
           isSwipe ? 
             <Swipeable
-              leftContent={whiteContent}
-              rightContent={whiteContent}
+              leftContent={tabActive > 0 ? whiteContent : null}
+              rightContent={tabActive < React.Children.count(children) - 1 ? whiteContent : null}
               onLeftActionRelease={() => this.onSwipe(SWIPE_LEFT)}
               onRightActionRelease={() => this.onSwipe(SWIPE_RIGHT)}
               style={[styles.flex, styles.bgColor(bgColor)]}

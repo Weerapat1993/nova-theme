@@ -1,29 +1,35 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { View, Animated } from 'react-native'
+import { View, Animated, Dimensions } from 'react-native'
 import TabbarItem from './TabbarItem'
 import styles from './styles'
 
-const TabbarHeader = ({ children, bgColor, underlineColor, total, underlinePosition, tabActive, onPress, onLayout }) => (
-  <View 
-    onLayout={onLayout}
-    style={styles.tabbarContainer(bgColor)}>
-    {
-      React.Children.map(children, (child, key) => {
-        const { title } = child.props
-        return (
-          <TabbarItem 
-            key={key} 
-            textColor={tabActive === key ? underlineColor : null} 
-            title={title} 
-            onPress={() => onPress(key)} 
-          />
-        )
-      })
-    }
-    <Animated.View style={styles.tabbarStick(total, underlinePosition, underlineColor)} />
-  </View>
-)
+const TabbarHeader = ({ children, bgColor, underlineColor, total, underlinePosition, tabActive, onPress, onLayout }) => {
+  const { width } = Dimensions.get('window')
+  return (
+    <View 
+      onLayout={onLayout}
+      style={styles.tabbarContainer(bgColor)}>
+      {
+        React.Children.map(children, (child, key) => {
+          const { title, iconLabel, badge } = child.props
+          return (
+            <TabbarItem 
+              key={key} 
+              textColor={tabActive === key ? underlineColor : null} 
+              title={title}
+              icon={iconLabel}
+              badge={badge}
+              width={width / React.Children.count(children)}
+              onPress={() => onPress(key)} 
+            />
+          )
+        })
+      }
+      <Animated.View style={styles.tabbarStick(total, underlinePosition, underlineColor)} />
+    </View>
+  )
+}
 
 TabbarHeader.defaultProps = {
   bgColor: null,

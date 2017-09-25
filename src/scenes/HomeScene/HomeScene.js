@@ -105,11 +105,11 @@ class HomeScene extends Component {
           />
         }
         <Tabbar underlineColor={theme.PRIMARY} theme={theme} isSwipe>
-          <TabbarComponent title='Button' component={ButtonTab} />
-          <TabbarComponent title='Fonts' component={FontTab} />
-          <TabbarComponent title='Content' component={ContentTab} />
-          <TabbarComponent title='Icon' component={IconTab} />
-          <TabbarComponent title='API' component={ApiTab} />
+          <TabbarComponent iconLabel='home' component={ButtonTab} />
+          <TabbarComponent iconLabel='library-books' component={FontTab} />
+          <TabbarComponent iconLabel='star' component={ContentTab} />
+          <TabbarComponent iconLabel='notifications' badge={3} component={IconTab} />
+          <TabbarComponent iconLabel='menu' component={ApiTab} />
         </Tabbar>
         <Flex row>
           <ThemeColor title='Google Blue' color='#39c' onPress={() => this.setTheme('#39c')} />

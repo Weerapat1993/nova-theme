@@ -47,8 +47,8 @@ class LoginScene extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.auth.isAuth) {
-      alert('LOGIN SUCCESS')
+    const { auth } = this.props
+    if(nextProps.auth.isAuth !== auth.isAuth && nextProps.auth.isAuth) {
       Actions.pop()
     }
   }
@@ -74,7 +74,7 @@ class LoginScene extends Component {
           auth.error && 
             <AlertDialog
               message={auth.error}
-              actionButton={[{ text: 'ตกลง', onPress: this.handleClearError }]}
+              actionButtons={[{ text: 'ตกลง', onPress: this.handleClearError }]}
             /> 
         }
         <View style={styles.backMenu}>
