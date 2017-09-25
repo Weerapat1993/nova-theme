@@ -43,8 +43,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 
 ApiTab.propTypes = {
   theme: PropTypes.object.isRequired,
-  users: PropTypes.object.isRequired,
-  userActions: PropTypes.array.isRequired,
+  users: PropTypes.array.isRequired,
+  userActions: PropTypes.object.isRequired,
   isFetching: PropTypes.bool.isRequired,
 }
 
