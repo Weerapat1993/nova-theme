@@ -1,36 +1,11 @@
 import React, { Component } from 'react'
-import { View, Text, Animated, Easing } from 'react-native'
+import { View, Text, Animated, Dimensions } from 'react-native'
 import IconButton from '../IconButton'
+import { CardFooter } from '../Card'
+import Button from '../Button'
+import Flex from '../Flex'
 import { COLOR } from '../../assets'
-
-const styles = {
-  flex: {
-    flex: 1,
-  },
-  padding: (padding) => ({
-    padding,
-    borderBottomWidth: 1,
-    borderBottomColor: '#e8e8e8',
-    flexDirection: 'row'
-  }),
-  cardView: {
-    backgroundColor: COLOR.WHITE,
-    marginBottom: 15,
-    borderTopWidth: 1,
-    borderTopColor: '#e8e8e8',
-    borderBottomWidth: 1,
-    borderBottomColor: '#e8e8e8',
-  },
-  cardHeaderText: {
-    padding: 10,
-    color: '#666',
-    fontWeight: 'bold',
-  },
-  collaspe: (height) => ({
-    height,
-    overflow: 'hidden',
-  })
-}
+import styles from './styles'
 
 class Card extends Component {
   constructor() {
@@ -38,11 +13,12 @@ class Card extends Component {
 
     this.state = {
       isCollaspe: false,
+      favorite: false,
     }
     this.animateCollaspe = new Animated.Value(1)
     this.spin = new Animated.Value(1)
+    this.animatedOpacity = new Animated.Value(0)
     this.handleCollaspe = this.handleCollaspe.bind(this)
-    
   }
 
   componentDidUpdate (prevProps, prevState) {
@@ -72,6 +48,15 @@ class Card extends Component {
         duration: 300,
       },
     ).start()
+    Animated.timing(
+      this.animatedOpacity,
+      {
+        toValue: 1,
+        duration: 500,
+      }, {
+        useNativeDriver: true
+      }
+    ).start()
   }
 
   animateReturn() {
@@ -91,15 +76,29 @@ class Card extends Component {
         duration: 300,
       },
     ).start()
+    Animated.timing(
+      this.animatedOpacity,
+      {
+        toValue: 0,
+        duration: 500,
+      }, {
+        useNativeDriver: true
+      }
+    ).start()
   }
 
   handleCollaspe(isCollaspe) {
     this.setState({ isCollaspe })
   }
 
+  handleFavorite(favorite) {
+    this.setState({ favorite })
+  }
+
   render() {
+    const { width } = Dimensions.get('window')
     const { title, children } = this.props
-    const { isCollaspe } = this.state
+    const { isCollaspe, favorite } = this.state
     const spin = this.spin.interpolate({
       inputRange: [0, 1],
       outputRange: ['0deg', '180deg']
@@ -116,6 +115,24 @@ class Card extends Component {
               <View style={styles.flex}>
                 <Text style={styles.cardHeaderText}>{title}</Text>
               </View>
+              <Animated.View style={styles.opacity(this.animatedOpacity)}>
+                <IconButton 
+                  name={favorite ? 'favorite' : 'favorite-border'}
+                  color={favorite ? '#f77' : '#666'}
+                  underlayColor='#eee'
+                  flat
+                  size={32} 
+                  onPress={() => this.handleFavorite(!favorite)}
+                />
+                <IconButton 
+                  name='chat-bubble-outline' 
+                  color='#666'
+                  underlayColor='#eee'
+                  flat
+                  size={32} 
+                  onPress={() => alert('Comment')}
+                />
+              </Animated.View>
               <Animated.View style={{ transform: [{ rotate: spin }] }}>
                 <IconButton 
                   name='keyboard-arrow-down' 
@@ -132,6 +149,31 @@ class Card extends Component {
           title ? 
             <Animated.View style={styles.collaspe(animateCollaspe)}>
               {children}
+              <CardFooter>
+                <View style={styles.flexRow(width)}>
+                  <Flex size={1} align='center'>
+                    <Button
+                      icon={favorite ? 'favorite' : 'favorite-border'}
+                      color={favorite ? '#f77' : '#666'}
+                      title='Favorite'
+                      underlayColor='#eee'
+                      flat
+                      onPress={() => this.handleFavorite(!favorite)}
+                    />
+                  </Flex>
+                  <Flex size={1} align='center'>
+                    <Button
+                      icon='chat-bubble-outline'
+                      iconPosition='right'
+                      title='Comment'
+                      underlayColor='#eee'
+                      color={COLOR.DISABLED}
+                      flat
+                      onPress={() => alert('Comment')}
+                    />
+                  </Flex>
+                </View>
+              </CardFooter>
             </Animated.View>
           :
             children

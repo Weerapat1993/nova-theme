@@ -6,27 +6,8 @@ import { View, Dimensions } from 'react-native'
 import { Flex, Button, InputForm, Card, CardContent, CardFooter, Icon } from '../../../../components'
 import { COLOR } from '../../../../assets'
 // import { feedValidation } from '../../../../redux/feed'
+import styles from './styles'
 
-const styles = {
-  flexRow: (width) => ({
-    width,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  }),
-  flex: {
-    flex: 1
-  },
-  contentStyles: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 75,
-  },
-  marginTop: (marginTop) => ({
-    marginTop,
-  })
-}
 
 const WriteFeedForm = ({ handleSubmit, theme, pristine, submitting }) => {
   const { width } = Dimensions.get('window')
