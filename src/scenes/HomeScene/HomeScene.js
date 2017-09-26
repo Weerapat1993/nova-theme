@@ -72,7 +72,6 @@ class HomeScene extends Component {
         name={auth.isAuth ? 'compare-arrows' : 'lock'}
         color={COLOR.WHITE}
         flat
-        isHighlight={false}
         iconSize={24}
         onPress={auth.isAuth ? this.authLogout : Actions.login}
       />
@@ -82,7 +81,6 @@ class HomeScene extends Component {
         name='search'
         color={COLOR.WHITE}
         flat
-        isHighlight={false}
         iconSize={24}
         onPress={() => this.handleKeyboard(!keyboard ? true : false)}
       />

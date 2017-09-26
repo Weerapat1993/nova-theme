@@ -7,6 +7,10 @@ export const initalTheme = {
     WHITE: '#fff',
     BLACK: '#333',
     DISABLED: '#666',
+    SUCCESS: '#0A0',
+    DANGER: '#F00',
+    WARNING: '#FC0',
+    INFO: '#3CF',
   },
   STATUS_BAR: {
     HEIGHT: Platform.OS === 'ios' ? 0 : 24

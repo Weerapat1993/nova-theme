@@ -1,6 +1,6 @@
 import HomeScene from './HomeScene'
 import LoginScene from './LoginScene'
-import TabExample from './TabExample'
+import TabExample from './TabExample2'
 
 export {
   HomeScene,
