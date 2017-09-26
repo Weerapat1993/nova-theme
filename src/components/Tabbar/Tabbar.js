@@ -6,7 +6,7 @@ import styles from './styles'
 import TabbarHeader from './TabbarHeader'
 import Flex from '../Flex'
 
-const whiteContent = <Flex size={1} bgColor='white' />
+const whiteContent = <Flex size={1} />
 const SWIPE_LEFT = 'SWIPE_LEFT'
 const SWIPE_RIGHT = 'SWIPE_RIGHT'
 

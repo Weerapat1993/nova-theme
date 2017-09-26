@@ -50,7 +50,7 @@ class Button extends Component {
       return (
         <VectorIcon 
           name={icon}
-          color={'rgba(255,255,255,0.5)'}
+          color={flat ? '#999' : 'rgba(255,255,255,0.5)'}
           size={iconSize}
         />
       )
@@ -79,14 +79,14 @@ class Button extends Component {
       isHighlight,
       padding,
       style,
-      textColor,
+      underlayColor,
     } = this.props
     const Touchable = flat && isHighlight ? TouchableHighlight : TouchableOpacity
     if(!disabled) {
       return (
         <Touchable 
           style={[styles.buttonView(color, rounded, flat, outline, padding), style]} 
-          underlayColor='rgba(255,255,255,0.5)'
+          underlayColor={underlayColor || 'rgba(255,255,255,0.5)'}
           onPress={onPress}
           onShowUnderlay={() => this.setState({ press: true })}
           onHideUnderlay={() => this.setState({ press: false })}
@@ -114,7 +114,7 @@ class Button extends Component {
           { 
             title && 
               <View style={styles.marginHorizontal(10)}>
-                <Text style={styles.buttonDisableText(outline)}>{title}</Text>
+                <Text style={styles.buttonDisableText(outline, disabled)}>{title}</Text>
               </View>
           }
           { loading && !icon && iconPosition === 'right' && this.renderLoading() }
@@ -139,6 +139,7 @@ Button.defaultProps = {
   iconSize: 20,
   padding: 10,
   style: {},
+  underlayColor: null,
 }
 
 Button.propTypes = {
@@ -159,6 +160,7 @@ Button.propTypes = {
     PropTypes.object,
     PropTypes.array,
   ]),
+  underlayColor: PropTypes.string,
 }
 
 export default Button

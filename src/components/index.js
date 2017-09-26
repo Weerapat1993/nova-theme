@@ -12,6 +12,7 @@ import Icon from './Icon'
 import AlertDialog from './AlertDialog'
 import InputForm from './InputForm'
 import Badge from './Badge'
+import { Card, CardFooter, CardContent } from './Card'
 
 // High Order Components
 import { Authentication, AuthComponent } from './Authentication'
@@ -35,4 +36,7 @@ export {
   Authentication,
   AuthComponent,
   Badge,
+  Card,
+  CardFooter,
+  CardContent,
 }

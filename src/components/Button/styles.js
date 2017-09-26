@@ -22,7 +22,7 @@ export default {
   buttonText: (color, flat, outline) => ({
     color: (flat || outline) ? color : WHITE
   }),
-  buttonDisableText: (outline) => ({
+  buttonDisableText: (outline, disabled) => ({
     color: outline ? 'rgba(255,255,255,0.5)' : GREY,
   }),
   buttonTextRow: {

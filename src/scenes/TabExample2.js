@@ -3,6 +3,7 @@ import { View } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import globalStyles from '../config/globalStyles'
 import { Tabbar2, TabbarComponent, IconButton, Navbar } from '../components'
+import { ButtonTab, FeedTab, ContentTab, IconTab, ApiTab } from './HomeScene/tabs'
 import Theme from '../config/theme'
 
 const styles = {
@@ -10,12 +11,6 @@ const styles = {
     flex: 1,
   },
 }
-
-const FirstRoute = () => <View style={[ styles.container, { backgroundColor: '#ff4081' } ]} />;
-const SecondRoute = () => <View style={[ styles.container, { backgroundColor: '#673ab7' } ]} />;
-const ThirdRoute = () => <View style={[ styles.container, { backgroundColor: '#0A0' } ]} />;
-const FourthRoute = () => <View style={[ styles.container, { backgroundColor: '#C93' } ]} />;
-const FifthRoute = () => <View style={[ styles.container, { backgroundColor: '#39C' } ]} />;
 
 class TabbarExample2 extends Component {
   constructor() {
@@ -55,11 +50,11 @@ class TabbarExample2 extends Component {
       >
         <View style={globalStyles.flex}>
           <Tabbar2 underlineColor={theme.PRIMARY} theme={theme} isSwipe>
-            <TabbarComponent iconLabel='home' component={FirstRoute} />
-            <TabbarComponent iconLabel='library-books' component={SecondRoute} />
-            <TabbarComponent iconLabel='star' component={ThirdRoute} />
-            <TabbarComponent iconLabel='notifications' badge={3} component={FourthRoute} />
-            <TabbarComponent iconLabel='menu' component={FifthRoute} />
+            <TabbarComponent iconLabel='home' component={ButtonTab} />
+            <TabbarComponent iconLabel='library-books' component={FeedTab} />
+            <TabbarComponent iconLabel='star' component={ContentTab} />
+            <TabbarComponent iconLabel='notifications' badge={3} component={IconTab} />
+            <TabbarComponent iconLabel='menu' component={ApiTab} />
           </Tabbar2>
         </View>
       </Navbar>

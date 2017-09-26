@@ -2,7 +2,6 @@ const styles = {
   container: {
     marginTop: 30,
     marginHorizontal: 15,
-
   },
   colorTheme: {
     height: 60,

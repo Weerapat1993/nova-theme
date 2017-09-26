@@ -1,0 +1,1 @@
+export { feedValidation } from './feedValidation'

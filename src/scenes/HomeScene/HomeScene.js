@@ -16,7 +16,7 @@ import {
 import { COLOR } from '../../assets'
 import Theme from '../../config/theme'
 import ThemeColor from './ThemeColor'
-import { ButtonTab, FontTab, ContentTab, IconTab, ApiTab } from './tabs'
+import { ButtonTab, FeedTab, ContentTab, IconTab, ApiTab } from './tabs'
 
 class HomeScene extends Component {
   constructor() {
@@ -104,9 +104,9 @@ class HomeScene extends Component {
         }
         <Tabbar underlineColor={theme.PRIMARY} theme={theme} isSwipe>
           <TabbarComponent iconLabel='home' component={ButtonTab} />
-          <TabbarComponent iconLabel='library-books' component={FontTab} />
+          <TabbarComponent iconLabel='library-books' component={FeedTab} />
           <TabbarComponent iconLabel='star' component={ContentTab} />
-          <TabbarComponent iconLabel='notifications' badge={3} component={IconTab} />
+          <TabbarComponent iconLabel='notifications' badge={120} component={IconTab} />
           <TabbarComponent iconLabel='menu' component={ApiTab} />
         </Tabbar>
         <Flex row>

@@ -1,56 +1,15 @@
 //import liraries
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { View, TextInput, Animated, Platform } from 'react-native'
+import { View, TextInput, Animated } from 'react-native'
 import IconButton from '../IconButton'
 import MessageError from './MessageError'
+import styles from './styles'
 
-const styles = {
-  marginTop: (margin) => ({
-    margin
-  }),
-  color: (color) => ({
-    color
-  }),
-  placeholderStyle: (color) => ({
-    color, 
-    fontSize: 13,
-  }),
-  inputStyle: (color, focus) => ({
-    paddingHorizontal: 5,
-    // paddingVertical: 10,
-    paddingTop: 10,
-    paddingBottom: Platform.OS === 'ios' ? 5 : 0,
-    color,
-    borderBottomWidth: focus ? 2 : 1,
-    borderBottomColor: color
-  }),
-  viewInput: {
-    paddingHorizontal: 15,
-    marginTop: 15,
-    marginBottom: 10,
-  },
-  textLabel: (fontSize, color) => ({
-    paddingLeft: 5,
-    fontSize,
-    color,
-  }),
-  viewLabel: (value) => ({
-    position: 'absolute',
-    left: 15,
-    top: value,
-  }),
-  showPassword: {
-    position: 'absolute',
-    right: 15,
-    top: 15,
-    zIndex: 100,
-  },
-}
-
-const positionLabel = [30, 5]
+const positionLabel = [35, 5]
 const fontLabel = [14, 16]
-const duration = 500
+const duration = 300
+const opacity = [1, 0]
 
 class InputForm extends Component {
   constructor(props) {
@@ -65,7 +24,7 @@ class InputForm extends Component {
 
     this.animateFontSize = new Animated.Value(fontLabel[0])
     this.animatePosition = new Animated.Value(positionLabel[0])
-
+    this.animateOpacity = new Animated.Value(opacity[0])
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -78,55 +37,92 @@ class InputForm extends Component {
   }
 
   animate() {
-    Animated.timing(
-      this.animateFontSize,
-      {
-        toValue: fontLabel[1],
-        duration,
-      }, {
-        useNativeDriver: true
-      }
-    ).start()
-    Animated.timing(
-      this.animatePosition,
-      {
-        toValue: positionLabel[1],
-        duration,
-      }, {
-        useNativeDriver: true
-      }
-    ).start()
+    const { label, placeholder } = this.props
+    if(label) {
+      Animated.timing(
+        this.animateFontSize,
+        {
+          toValue: fontLabel[1],
+          duration,
+        }, {
+          useNativeDriver: true
+        }
+      ).start()
+      Animated.timing(
+        this.animatePosition,
+        {
+          toValue: positionLabel[1],
+          duration,
+        }, {
+          useNativeDriver: true
+        }
+      ).start()
+    }
+    if(placeholder) {
+      Animated.timing(
+        this.animateOpacity,
+        {
+          toValue: opacity[1],
+          duration,
+        }, {
+          useNativeDriver: true
+        }
+      ).start()
+    }
   }
 
   animateReturn() {
-    Animated.timing(
-      this.animateFontSize,
-      {
-        toValue: fontLabel[0],
-        duration,
-      }, {
-        useNativeDriver: true
-      }
-    ).start()
-    Animated.timing(
-      this.animatePosition,
-      {
-        toValue: positionLabel[0],
-        duration,
-      }, {
-        useNativeDriver: true
-      }
-    ).start()
+    const { label, placeholder } = this.props
+    if(label) {
+      Animated.timing(
+        this.animateFontSize,
+        {
+          toValue: fontLabel[0],
+          duration,
+        }, {
+          useNativeDriver: true
+        }
+      ).start()
+      Animated.timing(
+        this.animatePosition,
+        {
+          toValue: positionLabel[0],
+          duration,
+        }, {
+          useNativeDriver: true
+        }
+      ).start()
+    }
+    if(placeholder) {
+      Animated.timing(
+        this.animateOpacity,
+        {
+          toValue: opacity[0],
+          duration,
+        }, {
+          useNativeDriver: true
+        }
+      ).start()
+    }
   }
 
   render() {
-    const { input, label, placeholder, themeColor, meta: { touched, error, warning } } = this.props
+    const { input, label, placeholder, themeColor, multiline, isUnderline, meta: { touched, error, warning } } = this.props
     const { secureTextEntry, password, focus } = this.state
     return (
       <View>
-        <Animated.View style={styles.viewLabel(this.animatePosition)}>
-          <Animated.Text style={styles.textLabel(this.animateFontSize, themeColor)}>{label}</Animated.Text>
-        </Animated.View> 
+        {
+          label &&
+            <Animated.View style={styles.viewLabel(this.animatePosition)}>
+              <Animated.Text style={styles.textLabel(this.animateFontSize, themeColor)}>{label}</Animated.Text>
+            </Animated.View>
+        }
+        {
+          placeholder &&
+            <View style={styles.viewOpacity(positionLabel[0])}>
+              <Animated.Text style={styles.textOpacity(fontLabel[0], this.animateOpacity, '#ccc')}>{placeholder}</Animated.Text>
+            </View> 
+        }
         {
           password &&
             <View style={styles.showPassword}>
@@ -145,7 +141,8 @@ class InputForm extends Component {
             secureTextEntry={secureTextEntry}
             placeholderStyle={styles.placeholderStyle(themeColor)}
             placeholderTextColor={themeColor}
-            style={styles.inputStyle(themeColor, focus)}
+            style={styles.inputStyle(themeColor, focus, isUnderline)}
+            multiline={multiline}
             onChangeText={(value) => this.setState({ value })}
             onFocus={() => this.setState({ focus: true })}
             onBlur={() => this.setState({ focus: false })}
@@ -175,6 +172,8 @@ InputForm.defaultProps = {
   placeholder: null,
   themeColor: 'white',
   secureTextEntry: false,
+  isUnderline: false,
+  multiline: false,
 }
 
 InputForm.propTypes = {
@@ -184,6 +183,8 @@ InputForm.propTypes = {
   themeColor: PropTypes.string,
   secureTextEntry: PropTypes.bool,
   meta: PropTypes.object.isRequired,
+  isUnderline: PropTypes.bool,
+  multiline: PropTypes.bool,
 }
 
 export default InputForm

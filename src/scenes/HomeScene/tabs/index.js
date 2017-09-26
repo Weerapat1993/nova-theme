@@ -1,12 +1,12 @@
 import ButtonTab from './ButtonTab'
-import FontTab from './FontTab'
+import FeedTab from './FeedTab'
 import ContentTab from './ContentTab'
 import IconTab from './IconTab'
 import ApiTab from './ApiTab'
 
 export {
   ButtonTab,
-  FontTab,
+  FeedTab,
   ContentTab,
   IconTab,
   ApiTab,

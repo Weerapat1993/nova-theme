@@ -17,8 +17,8 @@ const styles = {
 
 const LoginForm = ({ handleSubmit, theme, pristine, submitting }) => (
   <Flex bgColor={theme.PRIMARY}>
-    <Field name='email' component={InputForm} label='อีเมล์' placeholder='อีเมล์' themeColor={COLOR.WHITE} />
-    <Field name='password' secureTextEntry component={InputForm} label='รหัสผ่าน' placeholder='รหัสผ่าน' themeColor={COLOR.WHITE} />
+    <Field name='email' component={InputForm} label='อีเมล์' themeColor={COLOR.WHITE} />
+    <Field name='password' secureTextEntry component={InputForm} label='รหัสผ่าน' themeColor={COLOR.WHITE} />
     <View style={styles.marginTop(20)}>
       <Button
         onPress={handleSubmit}

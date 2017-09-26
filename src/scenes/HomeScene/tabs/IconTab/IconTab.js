@@ -108,7 +108,7 @@ class IconTab extends Component {
       'chevron-down'
     ]
     return (
-      <ScrollView>
+      <ScrollView style={styles.backgroundColor(theme.WHITE)}>
         <View style={styles.hederViewCenter}>
           <Text style={[styles.textHeader, styles.color(theme.PRIMARY)]}>Vector Icons</Text>
         </View>
