@@ -1,5 +1,7 @@
 import { createValidator, required } from '../../utils'
 
-export const feedValidation = createValidator({
+const feedValidation = createValidator({
   message: [required],
 })
+
+export { feedValidation }
