@@ -17,11 +17,13 @@ const ButtonTab = ({ theme }) => (
           <Button 
             title='Button'
             color={theme.PRIMARY}
+            underlayColor='#eee'
             onPress={() => alert('Button')}
           />
           <Button 
             title='Flat'
             color={theme.PRIMARY}
+            underlayColor='#eee'
             onPress={() => alert('Button')}
             flat
             rounded
@@ -29,6 +31,7 @@ const ButtonTab = ({ theme }) => (
           <Button 
             title='Outline'
             color={theme.PRIMARY}
+            underlayColor='#eee'
             onPress={() => alert('Button')}
             outline
             rounded
@@ -38,6 +41,7 @@ const ButtonTab = ({ theme }) => (
           <Button 
             title='Disabled'
             color={theme.PRIMARY}
+            underlayColor='#eee'
             onPress={() => alert('Button')}
             disabled
             rounded
@@ -45,6 +49,7 @@ const ButtonTab = ({ theme }) => (
           <Button 
             title='Loading'
             color={theme.PRIMARY}
+            underlayColor='#eee'
             onPress={() => alert('Loading')}
             loading
             rounded
@@ -53,6 +58,7 @@ const ButtonTab = ({ theme }) => (
             icon='done'
             title='Icon'
             color={theme.PRIMARY}
+            underlayColor='#eee'
             onPress={() => alert('Icon Button')}
             rounded
           />      
@@ -63,6 +69,7 @@ const ButtonTab = ({ theme }) => (
             iconPosition='left'
             title='Icon Left'
             color={theme.PRIMARY}
+            underlayColor='#eee'
             onPress={() => alert('Icon Button')}
             rounded
             flat
@@ -70,16 +77,19 @@ const ButtonTab = ({ theme }) => (
           <IconButton 
             name='done'
             color={theme.PRIMARY}
+            underlayColor='#eee'
             onPress={() => alert('Icon Button')}
           />
           <IconButton 
             name='done'
             color={theme.PRIMARY}
+            underlayColor='#eee'
             onPress={() => alert('Icon Button')}
             flat
           />
           <IconButton
             name='loading'
+            underlayColor='#eee'
             onPress={() => alert('Icon Button')}
             disabled
           />
@@ -88,6 +98,7 @@ const ButtonTab = ({ theme }) => (
             iconPosition='right'
             title='Icon Right'
             color={theme.PRIMARY}
+            underlayColor='#eee'
             onPress={() => alert('Icon Button')}
             rounded
             disabled
@@ -97,6 +108,7 @@ const ButtonTab = ({ theme }) => (
           <Button 
             title='Go to TabExample'
             color={theme.PRIMARY}
+            underlayColor='#eee'
             onPress={() => Actions.tabExample()}
           />
         </View>

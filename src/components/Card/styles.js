@@ -44,6 +44,9 @@ const styles = {
     opacity,
     flexDirection: 'row'
   }),
+  opacityOnly: (opacity) => ({
+    opacity,
+  }),
 }
 
 export default styles

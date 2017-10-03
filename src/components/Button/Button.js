@@ -10,6 +10,7 @@ import {
 import VectorIcon from 'react-native-vector-icons/MaterialIcons'
 import styles from './styles'
 import { COLOR } from '../../assets'
+import Badge from '../Badge'
 
 class Button extends Component {
   constructor() {
@@ -80,6 +81,7 @@ class Button extends Component {
       padding,
       style,
       underlayColor,
+      badge,
     } = this.props
     const Touchable = flat && isHighlight ? TouchableHighlight : TouchableOpacity
     if(!disabled) {
@@ -92,6 +94,7 @@ class Button extends Component {
           onHideUnderlay={() => this.setState({ press: false })}
           >
           <View style={styles.buttonTextRow}>
+            { badge ? <Badge number={badge} style={{ top: -15, right: -15, zIndex: 5000 }} /> : <View /> }
             { loading && !icon && iconPosition === 'left' && this.renderLoading() }
             { icon && !loading && iconPosition === 'left' && this.renderIcon() }
             { 
@@ -140,6 +143,7 @@ Button.defaultProps = {
   padding: 10,
   style: {},
   underlayColor: null,
+  badge: 0,
 }
 
 Button.propTypes = {
@@ -161,6 +165,7 @@ Button.propTypes = {
     PropTypes.array,
   ]),
   underlayColor: PropTypes.string,
+  badge: PropTypes.number,
 }
 
 export default Button
