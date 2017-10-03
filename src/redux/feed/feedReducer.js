@@ -9,8 +9,8 @@ export const feedReducer = (state = initalState, action) => {
       return reducerFetchFeedRequest(state, action)
     case FETCH_FEED.SUCCESS:
       return reducerFetchFeedSuccess(state, action)
-    // case FETCH_FEED.FAILURE:
-    //   return reducerFetchFeedRequest(state, action)
+    case FETCH_FEED.FAILURE:
+      return reducerFetchFeedRequest(state, action)
     default:
       return state
   }
@@ -28,5 +28,12 @@ export const reducerFetchFeedSuccess = (state, action) => (
     data: [{ feed_id: action.key }],
     isFetching: false,
     error: false
+  })
+)
+
+export const reducerFetchFeedFailure = (state, action) => (
+  matchKeyObject(state, action.key, {
+    isFetching: false,
+    error: action.error
   })
 )
