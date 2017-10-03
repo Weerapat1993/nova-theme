@@ -10,7 +10,7 @@ export const feedReducer = (state = initalState, action) => {
     case FETCH_FEED.SUCCESS:
       return reducerFetchFeedSuccess(state, action)
     case FETCH_FEED.FAILURE:
-      return reducerFetchFeedRequest(state, action)
+      return reducerFetchFeedFailure(state, action)
     default:
       return state
   }
