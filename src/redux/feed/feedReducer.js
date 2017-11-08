@@ -1,7 +1,11 @@
 import { FETCH_FEED } from './feedActionTypes'
 import { matchKeyObject } from '../../utils'
 
-export const initalState = {}
+export const initalState = {
+  isFetching: true,
+  error: false,
+  keys: {}
+}
 
 export const feedReducer = (state = initalState, action) => {
   switch(action.type) {
@@ -16,24 +20,24 @@ export const feedReducer = (state = initalState, action) => {
   }
 }
 
-export const reducerFetchFeedRequest = (state, action) => (
-  matchKeyObject(state, action.key, {
-    isFetching: true,
-    error: false
-  })
-)
+export const reducerFetchFeedRequest = (state, action) => ({
+  ...state,
+  isFetching: true,
+  error: false,
+})
 
-export const reducerFetchFeedSuccess = (state, action) => (
-  matchKeyObject(state, action.key, {
-    data: [{ feed_id: action.key }],
-    isFetching: false,
-    error: false
-  })
-)
+export const reducerFetchFeedSuccess = (state, action) => ({
+  keys: {
+    [action.payload[0].id]: {
+      ...action.payload[0]
+    }
+  },
+  isFetching: false,
+  error: false
+})
 
-export const reducerFetchFeedFailure = (state, action) => (
-  matchKeyObject(state, action.key, {
-    isFetching: false,
-    error: action.error
-  })
-)
+export const reducerFetchFeedFailure = (state, action) => ({
+  ...state,
+  isFetching: false,
+  error: action.error.message
+})

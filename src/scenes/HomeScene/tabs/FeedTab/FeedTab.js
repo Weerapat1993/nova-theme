@@ -1,5 +1,9 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { ScrollView, Text } from 'react-native'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { feedActions } from '../../../../redux/feed'
 import { Card, CardContent } from '../../../../components/Card'
 import WriteFeedForm from './WriteFeedForm'
 import { Image } from '../../../../components'
@@ -14,36 +18,51 @@ class FeedTab extends Component {
     }
   }
 
+  componentDidMount () {
+    this.props.feedActions.fetchFeed()
+  }
+  
+
   handleSubmit(values, dispatch, props) {
     alert(JSON.stringify(values))
   }
 
   render () {
     const { theme } = this.state
+    const { feed } = this.props
+    console.log(feed.keys)
     return (
       <ScrollView>
         <WriteFeedForm theme={theme} onSubmit={this.handleSubmit} />
-        <Card title='Header'>
-          <Image source={{ uri: 'http://lorempixel.com/400/200/' }} />
-          <CardContent>
-            <Text>Feed</Text>
-          </CardContent>
-        </Card>
-        <Card title='Header'>
-          <Image source={{ uri: 'http://lorempixel.com/400/200/' }} />
-          <CardContent>
-            <Text>Feed</Text>
-          </CardContent>
-        </Card>
-        <Card title='Header'>
-          <Image source={{ uri: 'http://lorempixel.com/400/200/' }} />
-          <CardContent>
-            <Text>Feed</Text>
-          </CardContent>
-        </Card>
+        {
+          Object.keys(feed.keys).map((item, i) => (
+            <Card title={item.title} key={i} >
+              <CardContent>
+                <Text>{item.title}</Text>
+                <Text>{item.description}</Text>
+              </CardContent>
+              <Image source={{ uri: 'http://lorempixel.com/400/200/' }} />
+            </Card>
+          ))
+        }
       </ScrollView>
     )
   }
 }
 
-export default FeedTab
+
+FeedTab.propTypes = {
+  feed: PropTypes.object.isRequired,
+  feedActions: PropTypes.object.isRequired
+}
+
+const mapStateToProps = (state, ownProps) => ({
+  feed: state.feed,
+})
+
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  feedActions: bindActionCreators(feedActions, dispatch)
+})
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(FeedTab)

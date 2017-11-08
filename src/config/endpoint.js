@@ -1,6 +1,7 @@
 
-const IP = 'localhost'
-export const API_ENDPOINT = (path) => `http://${IP}:8000/api${path}`
+const IP = 'localhost:8000'
+export const API_VERSION = '/api/v1'
+export const API_ENDPOINT = (path) => `http://${IP}${API_VERSION}${path}`
 
 // Authentiaction
 export const API_ENDPOINT_AUTH_LOGIN = API_ENDPOINT('/auth/login')
