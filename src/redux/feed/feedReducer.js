@@ -1,5 +1,6 @@
 import { FETCH_FEED } from './feedActionTypes'
-import { matchKeyObject } from '../../utils'
+import { normalizeKeyById, normalizeData } from '../../utils'
+import { Feed } from '../../redux/model'
 
 export const initalState = {
   isFetching: true,
@@ -27,11 +28,8 @@ export const reducerFetchFeedRequest = (state, action) => ({
 })
 
 export const reducerFetchFeedSuccess = (state, action) => ({
-  keys: {
-    [action.payload[0].id]: {
-      ...action.payload[0]
-    }
-  },
+  keys: Feed(action.payload).get(),
+  byID: Feed(action.payload).getByID(),
   isFetching: false,
   error: false
 })

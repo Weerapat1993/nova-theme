@@ -5,6 +5,11 @@ const FeedController = {
         id: 'feed_id_1',
         title: 'Title',
         description: 'Description'
+      },
+      {
+        id: 'feed_id_2',
+        title: 'Title 2',
+        description: 'Description 2'
       }
     ]
     const responseData = {

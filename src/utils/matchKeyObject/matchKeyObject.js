@@ -82,3 +82,59 @@ export class TestReducer {
     return this.oldState
   }
 }
+
+/**
+ * Normalize Data Array to Object Key
+ * @param {string} primaryKey 
+ * @param {array} data 
+ */
+export const normalizeData = (primaryKey, data) => {
+  const newData = {}
+  data.forEach((item) => {
+    newData[item[primaryKey]] = item
+  })
+  return newData
+}
+
+/**
+ * Normalize Array Key By ID
+ * @param {string} primaryKey 
+ * @param {array} data 
+ */
+export const normalizeKeyById = (primaryKey, data) => {
+  const byID = []
+  data.forEach((item) => {
+    byID.push(item[primaryKey])
+  })
+  return byID
+}
+
+/**
+ * 
+ * @param {{}} data 
+ */
+export const where = (data, field, condition, expect) => {
+  const filter = (key) => {
+    switch(condition) {
+      case '>':
+        return data[key][field] > expect
+      case '>=':
+        return data[key][field] >= expect
+      case '<':
+        return data[key][field] < expect
+      case '<=':
+        return data[key][field] <= expect
+      case '!=':
+      case '!==':
+        return data[key][field] !== expect
+      case '=':
+      case '==':
+      case '===':
+      default:
+        return data[key][field] === expect
+    }
+  }
+  return Object.keys(data)
+    .filter(filter)
+    .reduce((res, key) => Object.assign(res, { [key]: data[key] }), {} )
+}

@@ -1,4 +1,4 @@
 export * from './asyncActionTypes'
 export * from './validation'
-export * from './arrayCollection'
-export { matchKeyObject, hasObject, TestReducer } from './matchKeyObject'
+export * from './Collection'
+export { matchKeyObject, hasObject, TestReducer, normalizeData, normalizeKeyById, where } from './matchKeyObject'
