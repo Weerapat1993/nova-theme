@@ -1,3 +1,4 @@
+import ObjectCollection from '../ObjectCollection'
 import { Feed } from '../../../redux/model'
 
 describe('ObjectCollection.js' ,() => {
@@ -31,23 +32,32 @@ describe('ObjectCollection.js' ,() => {
   })
 
   it('check function where condition =', () => {
-    const recieved = Feed(data).where('title', '=', 'Title').get()
+    const recieved = Feed(data).where('data.title', '=', 'Title').get()
     const expected = {
-      feed_id_1: {
-        id: 'feed_id_1',
-        title: 'Title',
-        money: 50
-      },
+      'feed_id_1': {
+        isFetching: false,
+        error: null,
+        data: {
+          id: 'feed_id_1',
+          title: 'Title',
+          money: 50
+        }
+      }
     }
     expect(recieved).toEqual(expected)
   })
 
   it('check function update condition =', () => {
+    const key = 'feed_id_2'
     const title = 'Title 222222222'
-    const recieved = Feed(data).update('feed_id_2', {
-      title,
+    const newUpdate = Feed(data).update(key, {
+      data: {
+        ...Feed(data).get()[key].data,
+        title
+      },
     })
-    expect(recieved['feed_id_2'].title).toEqual(title)
+    const recieved = newUpdate[key].data.title
+    expect(recieved).toEqual(title)
   })
 
   it('check function insert condition =', () => {
@@ -71,3 +81,71 @@ describe('ObjectCollection.js' ,() => {
     expect(recieved).toEqual(expected)
   })
 })
+
+describe('test Array', () => {
+  it('get', () => {
+    const newArray = [
+      {
+        id: 'user_id_1'
+      },
+      {
+        id: 'user_id_2'
+      },
+      {
+        id: 'user_id_3'
+      },
+    ]
+    const User = new ObjectCollection(newArray, 'data.id')
+      .fillable(item => ({
+        isFetching: false,
+        error: null,
+        data: item
+      }))
+      .normalize()
+
+    const recieved = User.where('data.id', '=', 'user_id_1').get()
+    const expected = {
+      'user_id_1': {
+        isFetching: false,
+        error: null,
+        data: {
+          id: 'user_id_1'
+        }
+      },
+    }
+    expect(recieved).toEqual(expected)
+  })
+
+  it('insert', () => {
+    const newArray = [
+      {
+        id: 'user_id_1'
+      },
+      {
+        id: 'user_id_2'
+      },
+      {
+        id: 'user_id_3'
+      },
+    ]
+    const User = new ObjectCollection(newArray, 'data.id')
+      .fillable(item => ({
+        isFetching: false,
+        error: null,
+        data: item
+      }))
+      .normalize()
+
+    const recieved = User.find(0).insert([{ id: 'user_id_4' }])
+    const expected = {
+      'user_id_4': {
+        isFetching: false,
+        error: null,
+        data: {
+          id: 'user_id_4'
+        }
+      },
+    }
+    expect(recieved).toEqual(expected)
+  })
+})  

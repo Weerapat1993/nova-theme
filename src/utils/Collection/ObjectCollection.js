@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 // Class Object Collection
 class ObjectCollection {
   /**
@@ -10,8 +12,8 @@ class ObjectCollection {
    */
   constructor(data, primaryKey) {
     this.primaryKey = primaryKey || 'id'
-    this.firstData = data || []
     this.data = data || []
+    this.callback = (item) => item
   }
 
   /**
@@ -21,10 +23,32 @@ class ObjectCollection {
   normalize() {
     const newData = {}
     this.data.forEach((item) => {
-      newData[item[this.primaryKey]] = item
+      newData[_.get(item, this.primaryKey)] = item
     })
     this.data = newData
     return this
+  }
+
+
+  /**
+   * Fillable
+   * @param {(item: {}) => this} callback 
+   */
+  fillable(callback) {
+    const oldArray = this.data
+    const newArray = oldArray.map(callback)
+    this.callback = callback
+    this.data = newArray
+    return this
+  }
+
+  /**
+   * Find Key Data in Object 
+   * @param {string} key 
+   * @return {this}
+   */
+  find(key) {
+    return this.where(this.primaryKey, '=', key)
   }
 
   /**
@@ -43,21 +67,21 @@ class ObjectCollection {
     const filter = (key) => {
       switch(condition) {
         case '>':
-          return data[key][field] > expect
+          return _.get(data[key], field) > expect
         case '>=':
-          return data[key][field] >= expect
+          return _.get(data[key], field) >= expect
         case '<':
-          return data[key][field] < expect
+          return _.get(data[key], field) < expect
         case '<=':
-          return data[key][field] <= expect
+          return _.get(data[key], field) <= expect
         case '!=':
         case '!==':
-          return data[key][field] !== expect
+          return _.get(data[key], field) !== expect
         case '=':
         case '==':
         case '===':
         default:
-          return data[key][field] === expect
+          return _.get(data[key], field) === expect
       }
     }
     this.data = Object.keys(data).filter(filter).reduce((res, key) => Object.assign(res, { [key]: data[key] }), {} )
@@ -149,8 +173,9 @@ class ObjectCollection {
   insert(arrayData) {
     const oldData = this.data
     const newData = {}
-    arrayData.forEach((item) => {
-      newData[item[this.primaryKey]] = item
+    const arrayFillable = arrayData.map(this.callback)
+    arrayFillable.forEach((item) => {
+      newData[_.get(item, this.primaryKey)] = item
     })
     return {
       ...oldData,

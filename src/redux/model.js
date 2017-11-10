@@ -7,4 +7,17 @@ const ModelObject = (data, primaryKey) => new ObjectCollection(data, primaryKey)
 export const User = (data) => Model(data, 'id')
 export const Category = (data) => Model(data, 'id')
 export const Product = (data) => Model(data, 'id')
-export const Feed = (data) => ModelObject(data, 'id')
+// export const Feed = (data) => ModelObject(data, 'id')
+
+
+export const Feed = (data) => (
+  new ObjectCollection(data, 'data.id')
+    // set Fillable
+    .fillable(item => ({
+      isFetching: false,
+      error: null,
+      data: item
+    }))
+    // Normalize Data
+    .normalize()
+)
