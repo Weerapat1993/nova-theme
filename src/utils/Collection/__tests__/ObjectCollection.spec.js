@@ -1,4 +1,3 @@
-import ObjectCollection from '../ObjectCollection'
 import { Feed } from '../../../redux/model'
 
 describe('ObjectCollection.js' ,() => {
@@ -39,6 +38,35 @@ describe('ObjectCollection.js' ,() => {
         title: 'Title',
         money: 50
       },
+    }
+    expect(recieved).toEqual(expected)
+  })
+
+  it('check function update condition =', () => {
+    const title = 'Title 222222222'
+    const recieved = Feed(data).update('feed_id_2', {
+      title,
+    })
+    expect(recieved['feed_id_2'].title).toEqual(title)
+  })
+
+  it('check function insert condition =', () => {
+    const newArray = [
+      {
+        id: 'feed_id_4',
+        title: 'Title 4',
+        money: 70
+      },
+      {
+        id: 'feed_id_5',
+        title: 'Title 5',
+        money: 80
+      },
+    ]
+    const recieved = Feed(data).insert(newArray)
+    const expected = {
+      ...Feed(data).get(),
+      ...Feed(newArray).get(),
     }
     expect(recieved).toEqual(expected)
   })

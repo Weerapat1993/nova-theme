@@ -14,6 +14,10 @@ class ObjectCollection {
     this.data = data || []
   }
 
+  /**
+   * Normalize Data from Array to Object Key 
+   * @return {this}
+   */
   normalize() {
     const newData = {}
     this.data.forEach((item) => {
@@ -137,6 +141,44 @@ class ObjectCollection {
     return this
   }
 
+  /**
+   * Insert Data Key in Object
+   * @param {[{ primaryKey: string }]} arrayData 
+   * @return {{}}
+   */
+  insert(arrayData) {
+    const oldData = this.data
+    const newData = {}
+    arrayData.forEach((item) => {
+      newData[item[this.primaryKey]] = item
+    })
+    return {
+      ...oldData,
+      ...newData,
+    }
+  }
+
+  /**
+   * Update Data into object
+   * @param {string} key 
+   * @param {{}} object
+   * @return {{}} 
+   */
+  update(key, object) {
+    const oldData = this.data
+    return {
+      ...oldData,
+      [key]: {
+        ...oldData[key],
+        ...object,
+      }
+    }
+  }
+
+  /**
+   * Normalize Data Key Object to Array
+   * @return {[]}
+   */
   toArray() {
     const data = this.data
     return Object.keys(data).map((key) => data[key])
