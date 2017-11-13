@@ -17,12 +17,14 @@ class ObjectCollection {
   }
 
   /**
-   * Normalize Data from Object KEy to Array
+   * Normalize Data from Object Key to Array
    * @return {this}
    */
   unnormalize() {
     const data = this.data
-    this.data = Object.keys(data).map((key) => data[key])
+    if(typeof data === 'object') {
+      this.data = Object.keys(data).map((key) => data[key])
+    }
     return this
   }
 
@@ -32,10 +34,13 @@ class ObjectCollection {
    */
   normalize() {
     const newData = {}
-    this.data.forEach((item) => {
-      newData[_.get(item, this.primaryKey)] = item
-    })
-    this.data = newData
+    const checkArray = Array.isArray(this.data)
+    if(checkArray) {
+      this.data.forEach((item) => {
+        newData[_.get(item, this.primaryKey)] = item
+      })
+      this.data = newData
+    }
     return this
   }
 
@@ -221,12 +226,30 @@ class ObjectCollection {
   }
 
   /**
-   * Normalize Data Key Object to Array
+   * Normalize Data to Array
    * @return {[]}
    */
   toArray() {
     const data = this.data
-    return Object.keys(data).map((key) => data[key])
+    if(typeof data === 'object') {
+      return Object.keys(data).map((key) => data[key])
+    }
+    return data
+  }
+
+   /**
+   * Normalize Data to Object Key 
+   * @return {this}
+   */
+  toObject() {
+    if(typeof this.data !== 'object') {
+      const newData = {}
+      this.data.forEach((item) => {
+        newData[_.get(item, this.primaryKey)] = item
+      })
+      return newData
+    }
+    return this.data
   }
 }
 

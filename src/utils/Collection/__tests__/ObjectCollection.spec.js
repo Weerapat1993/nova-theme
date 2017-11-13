@@ -170,7 +170,7 @@ describe('test Array', () => {
         timestamp: new Date().getTime() + 60000
       },
     ]
-    const filter = ['user_id_1','user_id_3']
+    const filter = ['user_id_2','user_id_1']
     const recieved = new ObjectCollection(newArray, 'data.id')
     .fillable(item => ({
       isFetching: false,
@@ -180,7 +180,9 @@ describe('test Array', () => {
     .normalize()
     .whereIn('data.id', filter)
     .orderBy('data.timestamp','asc')
-    .getByID('data.description')
+    .unnormalize()
+    .unnormalize()
+    .toArray()
     const expected = []
     expect(recieved).toEqual(expected)
   })
