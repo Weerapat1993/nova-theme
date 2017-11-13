@@ -36,10 +36,10 @@ class FeedTab extends Component {
         <WriteFeedForm theme={theme} onSubmit={this.handleSubmit} />
         {
           Object.keys(feed.keys).map((item, i) => (
-            <Card title={item.title} key={i} >
+            <Card title={item.data.title} key={i} >
               <CardContent>
-                <Text>{item.title}</Text>
-                <Text>{item.description}</Text>
+                <Text>{item.data.title}</Text>
+                <Text>{item.data.description}</Text>
               </CardContent>
               <Image source={{ uri: 'http://lorempixel.com/400/200/' }} />
             </Card>

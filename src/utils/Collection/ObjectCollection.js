@@ -17,6 +17,16 @@ class ObjectCollection {
   }
 
   /**
+   * Normalize Data from Object KEy to Array
+   * @return {this}
+   */
+  unnormalize() {
+    const data = this.data
+    this.data = Object.keys(data).map((key) => data[key])
+    return this
+  }
+
+  /**
    * Normalize Data from Array to Object Key 
    * @return {this}
    */
@@ -89,6 +99,17 @@ class ObjectCollection {
   }
 
   /**
+   * 
+   * @param {string} field 
+   * @param {['sting']} arrayExpect 
+   */
+  whereIn(field, arrayExpect) {
+    const oldData = arrayExpect.reduce((res, key) => Object.assign(res, { [key]: this.data[key] }), {} )
+    this.data = oldData
+    return this
+  }
+
+  /**
    * Get Length of Object
    * @return {number}
    */
@@ -110,29 +131,28 @@ class ObjectCollection {
     if(field) {
       const arr = []
       Object.keys(this.data).forEach((key) => {
-        arr.push(this.data[key][field])
+        arr.push(_.get(this.data[key], field))
       })
       return arr
     }
     return Object.keys(this.data)
   }
 
-
   orderBy(field, orderBy) {
     const data = this.data
     const arrayData = Object.keys(data).map((key) => data[key])
     let sortData = []
     if(arrayData.length) {
-      const type = arrayData[0][field] && typeof arrayData[0][field]
+      const type = _.get(arrayData[0], field) && typeof _.get(arrayData[0], field)
       if(type === 'number') {
         // sort by value
         switch(orderBy) {
           case 'desc':
-            sortData = arrayData.sort((a, b) => b[field] - a[field])
+            sortData = arrayData.sort((a, b) => _.get(b, field) - _.get(a, field))
             break
           case 'asc': 
           default:
-            sortData = arrayData.sort((a, b) => a[field] - b[field])
+            sortData = arrayData.sort((a, b) => _.get(a, field) - _.get(b, field))
             break
         }
       } else if(type === 'string') {
@@ -140,8 +160,8 @@ class ObjectCollection {
         switch(orderBy) {
           case 'desc':
             sortData = arrayData.sort((a, b) => {
-              const nameA = a[field].toUpperCase(); // ignore upper and lowercase
-              const nameB = b[field].toUpperCase(); // ignore upper and lowercase
+              const nameA = _.get(a, field).toUpperCase(); // ignore upper and lowercase
+              const nameB = _.get(b, field).toUpperCase(); // ignore upper and lowercase
               if(nameB < nameA) return -1;
               if(nameB > nameA) return 1;
               return 0;
@@ -150,8 +170,8 @@ class ObjectCollection {
           case 'asc': 
           default:
             sortData = arrayData.sort((a, b) => {
-              const nameA = a[field].toUpperCase(); // ignore upper and lowercase
-              const nameB = b[field].toUpperCase(); // ignore upper and lowercase
+              const nameA = _.get(a, field).toUpperCase(); // ignore upper and lowercase
+              const nameB = _.get(b, field).toUpperCase(); // ignore upper and lowercase
               if(nameA < nameB) return -1;
               if(nameA > nameB) return 1;
               return 0;

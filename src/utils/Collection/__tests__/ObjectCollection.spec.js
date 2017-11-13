@@ -148,4 +148,40 @@ describe('test Array', () => {
     }
     expect(recieved).toEqual(expected)
   })
+
+  it('whereIn', () => {
+    const newArray = [
+      {
+        id: 'user_id_1',
+        description: 'text 1',
+        money: 10,
+        timestamp: new Date().getTime() + 600000
+      },
+      {
+        id: 'user_id_2',
+        description: 'text 2',
+        money: 30,
+        timestamp: new Date().getTime() + 300000
+      },
+      {
+        id: 'user_id_3',
+        description: 'text 3',
+        money: 20,
+        timestamp: new Date().getTime() + 60000
+      },
+    ]
+    const filter = ['user_id_1','user_id_3']
+    const recieved = new ObjectCollection(newArray, 'data.id')
+    .fillable(item => ({
+      isFetching: false,
+      error: null,
+      data: item
+    }))
+    .normalize()
+    .whereIn('data.id', filter)
+    .orderBy('data.timestamp','asc')
+    .getByID('data.description')
+    const expected = []
+    expect(recieved).toEqual(expected)
+  })
 })  
