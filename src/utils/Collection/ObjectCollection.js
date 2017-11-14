@@ -12,8 +12,25 @@ class ObjectCollection {
    */
   constructor(data, primaryKey) {
     this.primaryKey = primaryKey || 'id'
+    this.firstData = data || []
     this.data = data || []
     this.callback = (item) => item
+  }
+
+  checkTypeObject(type = 'error') {
+    if(typeof this.data === 'object') {
+      return true
+    } 
+    console[type]('this data has not been normalize. Data should be `Object` only.')
+    return false
+  }
+
+  checkTypeArray(type = 'error') {
+    if(Array.isArray(this.data)) {
+      return true
+    } 
+    console[type]('this data has been normalize already. Data should be `Array` only.')
+    return false
   }
 
   /**
@@ -22,7 +39,7 @@ class ObjectCollection {
    */
   unnormalize() {
     const data = this.data
-    if(typeof data === 'object') {
+    if(this.checkTypeObject()) {
       this.data = Object.keys(data).map((key) => data[key])
     }
     return this
@@ -34,12 +51,12 @@ class ObjectCollection {
    */
   normalize() {
     const newData = {}
-    const checkArray = Array.isArray(this.data)
-    if(checkArray) {
+    if(this.checkTypeArray('warn')) {
       this.data.forEach((item) => {
         newData[_.get(item, this.primaryKey)] = item
       })
       this.data = newData
+      this.firstData = newData
     }
     return this
   }
@@ -51,10 +68,12 @@ class ObjectCollection {
    */
   fillable(callback) {
     const oldArray = this.data
-    const newArray = oldArray.map(callback)
-    this.callback = callback
-    this.data = newArray
-    return this
+    if(this.checkTypeArray()) {
+      const newArray = oldArray.map(callback)
+      this.callback = callback
+      this.data = newArray
+      return this
+    }
   }
 
   /**
@@ -63,6 +82,7 @@ class ObjectCollection {
    * @return {this}
    */
   find(key) {
+    if(!this.checkTypeObject()) return undefined
     return this.where(this.primaryKey, '=', key)
   }
 
@@ -78,6 +98,7 @@ class ObjectCollection {
    * @return {this} collection
    */
   where(field, condition, expect) {
+    if(!this.checkTypeObject()) return undefined
     const data = this.data
     const filter = (key) => {
       switch(condition) {
@@ -109,6 +130,7 @@ class ObjectCollection {
    * @param {['sting']} arrayExpect 
    */
   whereIn(field, arrayExpect) {
+    if(!this.checkTypeObject()) return undefined
     const oldData = arrayExpect.reduce((res, key) => Object.assign(res, { [key]: this.data[key] }), {} )
     this.data = oldData
     return this
@@ -135,6 +157,7 @@ class ObjectCollection {
   getByID(field) {
     if(field) {
       const arr = []
+      if(!this.checkTypeObject()) return undefined
       Object.keys(this.data).forEach((key) => {
         arr.push(_.get(this.data[key], field))
       })
@@ -145,6 +168,7 @@ class ObjectCollection {
 
   orderBy(field, orderBy) {
     const data = this.data
+    if(!this.checkTypeObject()) return undefined
     const arrayData = Object.keys(data).map((key) => data[key])
     let sortData = []
     if(arrayData.length) {
@@ -196,6 +220,7 @@ class ObjectCollection {
    * @return {{}}
    */
   insert(arrayData) {
+    if(!this.checkTypeObject()) return undefined
     const oldData = this.data
     const newData = {}
     const arrayFillable = arrayData.map(this.callback)
@@ -210,19 +235,19 @@ class ObjectCollection {
 
   /**
    * Update Data into object
-   * @param {string} key 
    * @param {{}} object
    * @return {{}} 
    */
-  update(key, object) {
-    const oldData = this.data
-    return {
-      ...oldData,
-      [key]: {
-        ...oldData[key],
-        ...object,
-      }
+  update(object) {
+    if(!this.checkTypeObject()) return undefined
+    const lastArray = Object.keys(this.data)
+    const updateData = lastArray.reduce((res, key) => Object.assign(res, { [key]: { ...this.data[key], ...object } }), {} )
+    const firstData = this.firstData
+    const newData = {
+      ...firstData,
+      ...updateData
     }
+    return newData
   }
 
   /**
@@ -242,7 +267,7 @@ class ObjectCollection {
    * @return {this}
    */
   toObject() {
-    if(typeof this.data !== 'object') {
+    if(Array.isArray(this.data)) {
       const newData = {}
       this.data.forEach((item) => {
         newData[_.get(item, this.primaryKey)] = item

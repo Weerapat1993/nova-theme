@@ -50,12 +50,13 @@ describe('ObjectCollection.js' ,() => {
   it('check function update condition =', () => {
     const key = 'feed_id_2'
     const title = 'Title 222222222'
-    const newUpdate = Feed(data).update(key, {
-      data: {
-        ...Feed(data).get()[key].data,
-        title
-      },
-    })
+    const newUpdate = Feed(data).find(key)
+      .update({
+        data: {
+          ...Feed(data).get()[key].data,
+          title
+        },
+      })
     const recieved = newUpdate[key].data.title
     expect(recieved).toEqual(title)
   })
@@ -103,7 +104,7 @@ describe('test Array', () => {
       }))
       .normalize()
 
-    const recieved = User.where('data.id', '=', 'user_id_1').get()
+    const recieved = User.find('user_id_1').get()
     const expected = {
       'user_id_1': {
         isFetching: false,
@@ -170,7 +171,7 @@ describe('test Array', () => {
         timestamp: new Date().getTime() + 60000
       },
     ]
-    const filter = ['user_id_2','user_id_1']
+    const filter = ['user_id_3','user_id_1']
     const recieved = new ObjectCollection(newArray, 'data.id')
     .fillable(item => ({
       isFetching: false,
@@ -179,11 +180,40 @@ describe('test Array', () => {
     }))
     .normalize()
     .whereIn('data.id', filter)
-    .orderBy('data.timestamp','asc')
-    .unnormalize()
-    .unnormalize()
-    .toArray()
-    const expected = []
+    .orderBy('data.timestamp','desc')
+    .getByID()
+    const expected = ['user_id_1','user_id_3']
     expect(recieved).toEqual(expected)
+  })
+
+  it('check fillable', () => {
+    const newArray = [
+      {
+        id: 'user_id_1',
+        description: 'text 1',
+        money: 10,
+        timestamp: new Date().getTime() + 600000
+      },
+      {
+        id: 'user_id_2',
+        description: 'text 2',
+        money: 30,
+        timestamp: new Date().getTime() + 300000
+      },
+      {
+        id: 'user_id_3',
+        description: 'text 3',
+        money: 20,
+        timestamp: new Date().getTime() + 60000
+      },
+    ]
+    const filter = ['user_id_3','user_id_1']
+    const recieved = new ObjectCollection(newArray, 'data.id')
+      .normalize()
+      .fillable(item => ({
+        isFetching: false,
+        error: null,
+        data: item
+      }))
   })
 })  

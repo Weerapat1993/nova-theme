@@ -9,9 +9,9 @@ class ArrayCollection {
    * @param {'String'} primaryKey
    */
   constructor(data, primaryKey) {
-    this.primaryKey = primaryKey ? primaryKey : 'id'
-    this.firstData = data ? data : []
-    this.data = data ? data : []
+    this.primaryKey = primaryKey || 'id'
+    this.firstData = data || []
+    this.data = data || []
   }
 
   /**
@@ -29,7 +29,7 @@ class ArrayCollection {
    */
   get(field) {
     if(field) {
-      let data = []
+      const data = []
       this.data.forEach((item) => {
         data.push(item[field])
       })
@@ -63,8 +63,8 @@ class ArrayCollection {
    * @return {this} collection
    */
   select(fileldArray) {
-    let oldArray = this.data
-    let newArray = []
+    const oldArray = this.data
+    const newArray = []
     let obj = {}
     oldArray.forEach((data) => {
       Object.keys(data).forEach((key) => {
@@ -145,7 +145,7 @@ class ArrayCollection {
    * 
    */
   whereIn(field, keyArray) {
-    let collect = []
+    const collect = []
     let array
     keyArray.forEach((key) => {
       array = this.data.filter((item) => item[field] === key)
@@ -193,7 +193,7 @@ class ArrayCollection {
     const PK = this.primaryKey
     if(this.firstOrFail() === {}) return data
     const newData = Object.assign({}, this.first(), update)
-    let newArray = this.firstData
+    const newArray = this.firstData
     newArray.forEach((item,i) => {
       if(newData[PK] === item[PK]){
         newArray[i] = newData
@@ -264,21 +264,21 @@ class ArrayCollection {
         switch(orderBy) {
           case 'desc':
             this.data.sort((a, b) => {
-              const nameA = a[field].toUpperCase(); // ignore upper and lowercase
-              const nameB = b[field].toUpperCase(); // ignore upper and lowercase
-              if(nameB < nameA) return -1;
-              if(nameB > nameA) return 1;
-              return 0;
+              const nameA = a[field].toUpperCase() // ignore upper and lowercase
+              const nameB = b[field].toUpperCase() // ignore upper and lowercase
+              if(nameB < nameA) return -1
+              if(nameB > nameA) return 1
+              return 0
             })
             break
           case 'asc': 
           default:
             this.data.sort((a, b) => {
-              const nameA = a[field].toUpperCase(); // ignore upper and lowercase
-              const nameB = b[field].toUpperCase(); // ignore upper and lowercase
-              if(nameA < nameB) return -1;
-              if(nameA > nameB) return 1;
-              return 0;
+              const nameA = a[field].toUpperCase() // ignore upper and lowercase
+              const nameB = b[field].toUpperCase() // ignore upper and lowercase
+              if(nameA < nameB) return -1
+              if(nameA > nameB) return 1
+              return 0
             })
             break
         }
