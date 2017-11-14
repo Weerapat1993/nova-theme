@@ -1,13 +1,21 @@
 import _ from 'lodash'
 
+const WARN = 'warn'
+const ERROR = 'error'
+const OBJECT = 'object'
+const ASC = 'asc'
+const DESC = 'desc'
+const STRING = 'string'
+const NUMBER = 'number'
+
 // Class Object Collection
 class ObjectCollection {
   /**
    * Build Object Collection
    * ```javascript
-   * const Collection = new ObjectCollection([], 'primaryKey')
+   * const Collection = new ObjectCollection([{}], 'primaryKey')
    * ```
-   * @param {[]} data
+   * @param {[{}]} data
    * @param {string} primaryKey
    */
   constructor(data, primaryKey) {
@@ -17,19 +25,19 @@ class ObjectCollection {
     this.callback = (item) => item
   }
 
-  checkTypeObject(type = 'error') {
-    if(typeof this.data === 'object') {
+  checkTypeObject(type = ERROR) {
+    if(typeof this.data === OBJECT) {
       return true
     } 
-    console[type]('this data has not been normalize. Data should be `Object` only.')
+    console[type]('this data has not been normalize. Data it should be `Object` only.')
     return false
   }
 
-  checkTypeArray(type = 'error') {
+  checkTypeArray(type = ERROR) {
     if(Array.isArray(this.data)) {
       return true
     } 
-    console[type]('this data has been normalize already. Data should be `Array` only.')
+    console[type]('this data has been normalize already. Data it should be `Array` only.')
     return false
   }
 
@@ -39,7 +47,7 @@ class ObjectCollection {
    */
   unnormalize() {
     const data = this.data
-    if(this.checkTypeObject()) {
+    if(this.checkTypeObject(WARN)) {
       this.data = Object.keys(data).map((key) => data[key])
     }
     return this
@@ -51,7 +59,7 @@ class ObjectCollection {
    */
   normalize() {
     const newData = {}
-    if(this.checkTypeArray('warn')) {
+    if(this.checkTypeArray(WARN)) {
       this.data.forEach((item) => {
         newData[_.get(item, this.primaryKey)] = item
       })
@@ -173,21 +181,21 @@ class ObjectCollection {
     let sortData = []
     if(arrayData.length) {
       const type = _.get(arrayData[0], field) && typeof _.get(arrayData[0], field)
-      if(type === 'number') {
+      if(type === NUMBER) {
         // sort by value
         switch(orderBy) {
-          case 'desc':
+          case DESC:
             sortData = arrayData.sort((a, b) => _.get(b, field) - _.get(a, field))
             break
-          case 'asc': 
+          case ASC: 
           default:
             sortData = arrayData.sort((a, b) => _.get(a, field) - _.get(b, field))
             break
         }
-      } else if(type === 'string') {
+      } else if(type === STRING) {
         // sort by name
         switch(orderBy) {
-          case 'desc':
+          case DESC:
             sortData = arrayData.sort((a, b) => {
               const nameA = _.get(a, field).toUpperCase(); // ignore upper and lowercase
               const nameB = _.get(b, field).toUpperCase(); // ignore upper and lowercase
@@ -196,7 +204,7 @@ class ObjectCollection {
               return 0;
             })
             break
-          case 'asc': 
+          case ASC: 
           default:
             sortData = arrayData.sort((a, b) => {
               const nameA = _.get(a, field).toUpperCase(); // ignore upper and lowercase
@@ -256,7 +264,7 @@ class ObjectCollection {
    */
   toArray() {
     const data = this.data
-    if(typeof data === 'object') {
+    if(this.checkTypeObject(WARN)) {
       return Object.keys(data).map((key) => data[key])
     }
     return data
@@ -267,7 +275,7 @@ class ObjectCollection {
    * @return {this}
    */
   toObject() {
-    if(Array.isArray(this.data)) {
+    if(this.checkTypeArray(WARN)) {
       const newData = {}
       this.data.forEach((item) => {
         newData[_.get(item, this.primaryKey)] = item
