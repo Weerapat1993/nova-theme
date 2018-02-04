@@ -1,10 +1,10 @@
 import { createStore, applyMiddleware, compose } from 'redux'
-import configureMockStore from 'redux-mock-store'
+// import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import createLogger from 'redux-logger'
+// import createLogger from 'redux-logger'
 import rootReducer from './rootReducer'
 
-const middlewares = [ thunk, createLogger ]
+const middlewares = [ thunk ]
 // if(process.env.NODE_ENV === 'development') middlewares.push(createLogger)
 
 const storeEnhancer = [
@@ -14,7 +14,7 @@ const storeEnhancer = [
 const finalCreateStore = compose(...storeEnhancer)(createStore)
 
 // configureMockStore with unit test
-export const mockStore = configureMockStore(middlewares)
+// export const mockStore = configureMockStore(middlewares)
 
 const configureStore = (initialState) => {
   return finalCreateStore(rootReducer, initialState)

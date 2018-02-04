@@ -53,7 +53,10 @@ SVGIcon.propTypes = {
     ICON.MATERIAL_ICON,
     ICON.FONT_AWESOME,
   ]),
-  style: PropTypes.object,
+  style: PropTypes.oneOfType([
+    PropTypes.array,
+    PropTypes.object,
+  ]),
 }
 
 export default SVGIcon
