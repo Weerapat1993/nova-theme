@@ -1,3 +1,5 @@
+const { response } = require('../utils')
+
 const FeedController = {
   index: (req, res) => {
     const data = [
@@ -12,13 +14,17 @@ const FeedController = {
         description: 'Description 2'
       }
     ]
-    const responseData = {
-      data,
-      code: 200,
-      status: 'OK',
+    res.send(response(200, data))
+  },
+  store: (req, res) => {
+    const data = {
+      ...req.body,
     }
-    res.send(responseData)
+
+    res.send(response(200, data))
   }
 }
+
+
 
 module.exports = FeedController

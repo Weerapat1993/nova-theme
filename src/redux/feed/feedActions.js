@@ -15,14 +15,18 @@ export const fetchFeed = () => (dispatch, getState) => {
     .catch(error => dispatch(fetchFeedFailure(error)))
 }
 
-export const createFeedRequest = (key) => ({ type: CREATE_FEED.REQUEST, key })
-export const createFeedSuccess = (key, payload) => ({ type: CREATE_FEED.SUCCESS, key, payload })
-export const createFeedFailure = (key, error) => ({ type: CREATE_FEED.FAILURE, key, error })
-export const createFeed = () => (dispatch, getState) => {
+export const createFeedRequest = () => ({ type: CREATE_FEED.REQUEST })
+export const createFeedSuccess = (payload) => ({ type: CREATE_FEED.SUCCESS, payload })
+export const createFeedFailure = (error) => ({ type: CREATE_FEED.FAILURE, error })
+export const createFeed = (data) => (dispatch, getState) => {
   dispatch(createFeedRequest())
   return axios({
-    method: 'GET',
+    method: 'POST',
     url: API_ENDPOINT_CREATE_FEED,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data
   })
     .then(res => dispatch(createFeedSuccess(res.data.data)))
     .catch(error => dispatch(createFeedFailure(error)))

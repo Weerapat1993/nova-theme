@@ -1,41 +1,68 @@
-import { FETCH_FEED } from './feedActionTypes'
-import { normalizeKeyById, normalizeData } from '../../utils'
+import { FETCH_FEED, CREATE_FEED } from './feedActionTypes'
 import { Feed } from '../../redux/model'
+import { Reducer, randomString } from '../../utils'
 
 export const initalState = {
   isFetching: true,
   error: false,
-  keys: {}
+  keys: {},
+  byID: [],
 }
 
+/**
+ * 
+ * @param {initalState} state 
+ * @param {{ type: string, payload: any, error: Error }} action
+ * @return {initalState}
+ */
 export const feedReducer = (state = initalState, action) => {
+  const reducer = new FeedReducer(state, action)
   switch(action.type) {
     case FETCH_FEED.REQUEST:
-      return reducerFetchFeedRequest(state, action)
+      return reducer.request()
     case FETCH_FEED.SUCCESS:
-      return reducerFetchFeedSuccess(state, action)
+      return reducer.fetchFeedSuccess()
     case FETCH_FEED.FAILURE:
-      return reducerFetchFeedFailure(state, action)
+      return reducer.failure()
+    case CREATE_FEED.REQUEST:
+      return reducer.request()
+    case CREATE_FEED.SUCCESS:
+      return reducer.createFeedSuccess()
+    case CREATE_FEED.FAILURE:
+      return reducer.failure()
     default:
       return state
   }
 }
 
-export const reducerFetchFeedRequest = (state, action) => ({
-  ...state,
-  isFetching: true,
-  error: false,
-})
-
-export const reducerFetchFeedSuccess = (state, action) => ({
-  keys: Feed(action.payload).get(),
-  byID: Feed(action.payload).getByID(),
-  isFetching: false,
-  error: false
-})
-
-export const reducerFetchFeedFailure = (state, action) => ({
-  ...state,
-  isFetching: false,
-  error: action.error.message
-})
+export class FeedReducer extends Reducer {
+  fetchFeedSuccess() {
+    return {
+      ...this.state,
+      keys: Feed(this.action.payload).get(),
+      byID: Feed(this.action.payload).getByID().reverse(),
+      isFetching: false,
+      error: false
+    }
+  }
+  
+  createFeedSuccess() {
+    const key = randomString(50)
+    const { keys, byID } = this.state
+    const { title, description } = this.action.payload
+    const data = [
+      {
+        id: key,
+        title,
+        description,
+      }
+    ]
+    return this.setState({
+      byID: [
+        key,
+        ...byID,
+      ],
+      keys: Feed(keys).insert(data)
+    })
+  }
+}

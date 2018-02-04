@@ -64,11 +64,9 @@ class ObjectCollection {
         newData[_.get(item, this.primaryKey)] = item
       })
       this.data = newData
-      this.firstData = newData
     }
     return this
   }
-
 
   /**
    * Fillable
@@ -224,19 +222,20 @@ class ObjectCollection {
 
   /**
    * Insert Data Key in Object
-   * @param {[{ primaryKey: string }]} arrayData 
-   * @return {{}}
+   * @param {Array.<Object>} arrayData 
+   * @return {Object}
    */
   insert(arrayData) {
     if(!this.checkTypeObject()) return undefined
-    const oldData = this.data
+    const firstData = this.firstData
     const newData = {}
     const arrayFillable = arrayData.map(this.callback)
     arrayFillable.forEach((item) => {
-      newData[_.get(item, this.primaryKey)] = item
+      const key = _.get(item, this.primaryKey)
+      newData[key] = item
     })
     return {
-      ...oldData,
+      ...firstData,
       ...newData,
     }
   }

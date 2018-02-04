@@ -2,8 +2,7 @@ import { FETCH_FEED } from '../feedActionTypes'
 import {
   initalState,
   feedReducer,
-  reducerFetchFeedRequest,
-  reducerFetchFeedSuccess,
+  FeedReducer,
 } from '../feedReducer'
 
 describe('feedReducer', () => {
@@ -19,11 +18,13 @@ describe('feedReducer', () => {
   })
   it('feedReducer reducerFetchFeedRequest', () => {
     const action = { type: FETCH_FEED.REQUEST }
+    const reducer = new FeedReducer(initalState, action)
     const recieved = feedReducer(initalState, action)
-    const expected = reducerFetchFeedRequest(initalState, action)
+    const expected = reducer.request()
     expect(recieved).toEqual(expected)
   })
   it('feedReducer reducerFetchFeedSuccess', () => {
+    
     const arrayData = [
       {
         id: 'feed_id_1',
@@ -45,8 +46,10 @@ describe('feedReducer', () => {
       type: FETCH_FEED.SUCCESS,
       payload: arrayData
     }
+
+    const reducer = new FeedReducer(initalState, action)
     const recieved = feedReducer(initalState, action)
-    const expected = {}
+    const expected = reducer.fetchFeedSuccess()
     expect(recieved).toEqual(expected)
   })
 })

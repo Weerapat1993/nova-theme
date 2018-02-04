@@ -12,6 +12,8 @@ export const Product = (data) => Model(data, 'id')
 
 export const Feed = (data) => (
   new ObjectCollection(data, 'data.id')
+    // Normalize Data
+    .unnormalize()
     // set Fillable
     .fillable(item => ({
       isFetching: false,

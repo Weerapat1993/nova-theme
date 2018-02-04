@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware, compose } from 'redux'
 // import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-// import createLogger from 'redux-logger'
+import createLogger from 'redux-logger'
 import rootReducer from './rootReducer'
 
 const middlewares = [ thunk ]

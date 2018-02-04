@@ -24,22 +24,26 @@ class FeedTab extends Component {
   
 
   handleSubmit(values, dispatch, props) {
-    alert(JSON.stringify(values))
+    const data = {
+      title: 'Title',
+      description: values.message,
+    }
+    dispatch(feedActions.createFeed(data))
   }
 
   render () {
     const { theme } = this.state
     const { feed } = this.props
-    const data = feed.keys
+    const { keys, byID } = feed
     return (
       <ScrollView>
         <WriteFeedForm theme={theme} onSubmit={this.handleSubmit} />
         {
-          Object.keys(data).map((key, i) => (
-            <Card title={data[key].data.title} key={i} >
+          byID.map((key, i) => (
+            <Card title={keys[key].data.title} key={i} >
               <CardContent>
-                <Text>{data[key].data.title}</Text>
-                <Text>{data[key].data.description}</Text>
+                <Text>{keys[key].data.title}</Text>
+                <Text>{keys[key].data.description}</Text>
               </CardContent>
               <Image source={{ uri: 'http://lorempixel.com/400/200/' }} />
             </Card>
