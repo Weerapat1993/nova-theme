@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { View, Text, Animated, Dimensions } from 'react-native'
+import { View, Text, Animated, Dimensions, Image } from 'react-native'
 import IconButton from '../IconButton'
 import { CardFooter } from '../Card'
 import Button from '../Button'
 import Flex from '../Flex'
-import { COLOR } from '../../assets'
+import { COLOR, globalStyles } from '../../assets'
 import styles from './styles'
 
 class Card extends Component {
@@ -13,13 +13,13 @@ class Card extends Component {
     super()
 
     this.state = {
-      isCollaspe: false,
+      isCollaspe: true,
       favorite: false,
     }
-    this.animateCollaspe = new Animated.Value(1)
-    this.spin = new Animated.Value(1)
-    this.animatedOpacity = new Animated.Value(0)
-    this.animatedOpacityOnly = new Animated.Value(1)
+    this.animateCollaspe = new Animated.Value(0)
+    this.spin = new Animated.Value(0)
+    this.animatedOpacity = new Animated.Value(1)
+    this.animatedOpacityOnly = new Animated.Value(0)
     this.handleCollaspe = this.handleCollaspe.bind(this)
   }
 
@@ -117,7 +117,7 @@ class Card extends Component {
 
   render() {
     const { width } = Dimensions.get('window')
-    const { title, children } = this.props
+    const { title, children, avatar } = this.props
     const { isCollaspe, favorite } = this.state
     const spin = this.spin.interpolate({
       inputRange: [0, 1],
@@ -125,15 +125,18 @@ class Card extends Component {
     })
     const animateCollaspe = this.animateCollaspe.interpolate({
       inputRange: [0, 1],
-      outputRange: [0, 300]
+      outputRange: [0, 500]
     })
     return (
       <View style={styles.cardView}>
         {
           title &&
             <View style={styles.padding(5)}>
-              <View style={styles.flex}>
-                <Text style={styles.cardHeaderText}>{title}</Text>
+              <View style={[globalStyles.flex, globalStyles.marginRight(20)]}>
+                <Flex row style={{ alignItems: 'center' }}>
+                  <Image source={{ uri: avatar }} style={globalStyles.size(40)} />
+                  <Text style={styles.cardHeaderText} numberOfLines={1} >{title}</Text>
+                </Flex>
               </View>
               <Animated.View style={styles.opacity(this.animatedOpacity)}>
                 <IconButton 
@@ -143,14 +146,6 @@ class Card extends Component {
                   flat
                   size={32} 
                   onPress={() => this.handleFavorite(!favorite)}
-                />
-                <IconButton 
-                  name='chat-bubble-outline' 
-                  color='#666'
-                  underlayColor='#eee'
-                  flat
-                  size={32} 
-                  onPress={() => alert('Comment')}
                 />
               </Animated.View>
               <Animated.View style={{ transform: [{ rotate: spin }] }}>
@@ -210,10 +205,12 @@ class Card extends Component {
 
 Card.defaultProps = {
   title: null,
+  avatar: null,
 }
 
 Card.propTypes = {
   title: PropTypes.string,
+  avatar: PropTypes.string,
   children: PropTypes.node,
 }
 

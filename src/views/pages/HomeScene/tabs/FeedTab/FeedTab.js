@@ -1,13 +1,16 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { ScrollView, Text } from 'react-native'
+import { ScrollView, View, Text, Linking, TouchableOpacity, ActivityIndicator, Dimensions } from 'react-native'
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import { feedActions } from '../../../../../redux/feed'
 import { Card, CardContent } from '../../../../components/Card'
 import WriteFeedForm from './WriteFeedForm'
-import { Image } from '../../../../components'
+import { Image, Flex } from '../../../../components'
 import Theme from '../../../../../config/theme'
+import { githubActions } from '../../../../../redux/github';
+import { globalStyles } from '../../../../assets';
+import styles from './styles'
+
+const { width } = Dimensions.get('window')
 
 class FeedTab extends Component {
   constructor() {
@@ -16,56 +19,79 @@ class FeedTab extends Component {
     this.state = {
       theme: Theme.getColor()
     }
-  }
 
-  componentDidMount () {
-    this.props.feedActions.fetchFeed()
+    this.handleClearData = this.handleClearData.bind(this)
   }
   
-
   handleSubmit(values, dispatch, props) {
-    const data = {
-      title: 'Title',
-      description: values.message,
+    if(values.message) {
+      dispatch(githubActions.fetchGithub(values.message))
     }
-    dispatch(feedActions.createFeed(data))
+  }
+
+  handleClearData() {
+    console.log(this.props)
+    this.props.clearData()
+  }
+
+  linkUrl(url) {
+    Linking.openURL(url)
+      .catch(err => console.error('An error occurred', err))
   }
 
   render () {
     const { theme } = this.state
-    const { feed } = this.props
-    const { keys, byID } = feed
+    const { github } = this.props
+    const { data, isFetching } = github
     return (
-      <ScrollView>
-        <WriteFeedForm theme={theme} onSubmit={this.handleSubmit} />
+      <Flex>
+        <ScrollView scrollEnabled={false} style={{ height: 150 }}>
+          <WriteFeedForm 
+            theme={theme} 
+            onSubmit={this.handleSubmit}
+            handleClearData={this.handleClearData}
+          />
+        </ScrollView>
         {
-          byID.map((key, i) => (
-            <Card title={keys[key].data.title} key={i} >
-              <CardContent>
-                <Text>{keys[key].data.title}</Text>
-                <Text>{keys[key].data.description}</Text>
-              </CardContent>
-              <Image source={{ uri: 'http://lorempixel.com/400/200/' }} />
-            </Card>
-          ))
+          isFetching ? (
+            <View style={styles.contentStyles}>
+              <ActivityIndicator size='large' />
+            </View>
+          ) : (
+            <ScrollView>
+            {
+              data.map((item, i) => (
+                <Card avatar={item.owner.avatar_url} title={item.full_name} key={i} >
+                  <CardContent>
+                    <TouchableOpacity onPress={() => this.linkUrl(item.html_url)}>
+                      <Text style={globalStyles.color(theme.PRIMARY)}>{item.full_name}</Text>
+                    </TouchableOpacity>
+                    <Text>{item.description}</Text>
+                  </CardContent>
+                  <Image source={{ uri: item.owner.avatar_url }} style={globalStyles.size(width)} />
+                </Card>
+              ))
+            }
+            </ScrollView>
+          )
         }
-      </ScrollView>
+      </Flex>
     )
   }
 }
 
 
 FeedTab.propTypes = {
-  feed: PropTypes.object.isRequired,
-  feedActions: PropTypes.object.isRequired
+  github: PropTypes.object.isRequired,
+  clearData: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  feed: state.feed,
+  github: state.github,
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  feedActions: bindActionCreators(feedActions, dispatch)
+  clearData: () => dispatch(githubActions.clearData())
 })
 
 

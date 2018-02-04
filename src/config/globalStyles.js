@@ -20,9 +20,25 @@ const globalStyles = {
   margin: (value) => ({
     margin: value
   }),
+  marginLeft: (value) => ({
+    marginLeft: value
+  }),
+  marginTop: (value) => ({
+    marginTop: value
+  }),
+  marginRight: (value) => ({
+    marginRight: value
+  }),
+  marginBottom: (value) => ({
+    marginBottom: value
+  }),
   padding: (value) => ({
     padding: value
   }),
+  size: (value) => ({
+    width: value,
+    height: value,
+  })
 }
 
 export default globalStyles

@@ -25,7 +25,7 @@ const styles = {
   }),
   cardView: {
     backgroundColor: 'white',
-    marginBottom: 15,
+    marginBottom: 0,
     borderTopWidth: 1,
     borderTopColor: '#e8e8e8',
     borderBottomWidth: 1,
@@ -42,7 +42,8 @@ const styles = {
   }),
   opacity: (opacity) => ({
     opacity,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    alignItems: 'center',
   }),
   opacityOnly: (opacity) => ({
     opacity,

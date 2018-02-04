@@ -37,13 +37,12 @@ export const feedReducer = (state = initalState, action) => {
 
 export class FeedReducer extends Reducer {
   fetchFeedSuccess() {
-    return {
-      ...this.state,
+    return this.setState({
       keys: Feed(this.action.payload).get(),
       byID: Feed(this.action.payload).getByID().reverse(),
       isFetching: false,
       error: false
-    }
+    })
   }
   
   createFeedSuccess() {

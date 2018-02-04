@@ -72,10 +72,12 @@ class Tabbar extends Component {
   }
 
   handleTab(tabActive) {
-    if(tabActive > this.state.tabActive) {
-      this.setState({ tabActive, swipe: SWIPE_RIGHT })
-    } else {
-      this.setState({ tabActive, swipe: SWIPE_LEFT })
+    if(tabActive !== this.state.tabActive) {
+      if(tabActive > this.state.tabActive) {
+        this.setState({ tabActive, swipe: SWIPE_RIGHT })
+      } else {
+        this.setState({ tabActive, swipe: SWIPE_LEFT })
+      }
     }
   }
 

@@ -18,3 +18,5 @@ export const API_ENDPOINT_GET_ROLES = API_ENDPOINT('/roles')
 export const API_ENDPOINT_GET_FEED = API_ENDPOINT('/feeds')
 export const API_ENDPOINT_CREATE_FEED = API_ENDPOINT('/feeds/store')
 
+export const API_ENDPOINT_SEARCH_GITHUB = (keywords) => `https://api.github.com/search/repositories?q=${keywords.replace(' ', '+')}&sort=stars&order=desc`
+

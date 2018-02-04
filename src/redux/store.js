@@ -4,7 +4,7 @@ import thunk from 'redux-thunk'
 import createLogger from 'redux-logger'
 import rootReducer from './rootReducer'
 
-const middlewares = [ thunk ]
+const middlewares = [ thunk, createLogger ]
 // if(process.env.NODE_ENV === 'development') middlewares.push(createLogger)
 
 const storeEnhancer = [
