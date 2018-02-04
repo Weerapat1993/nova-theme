@@ -4,7 +4,7 @@ import {
   HomeScene,
   LoginScene,
   TabExample,
-} from './scenes'
+} from './views/pages'
 
 const Routes = () => (
   <Router>

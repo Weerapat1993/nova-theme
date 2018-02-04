@@ -17,6 +17,8 @@ export const initalTheme = {
   }
 }
 
+const { COLOR } = initalTheme
+
 class Theme {
   constructor(initalTheme) {
     this.COLOR = initalTheme.COLOR
@@ -27,6 +29,10 @@ class Theme {
     this.COLOR.PRIMARY = color
   } 
 
+  /**
+   * GET COLOR
+   * @return {COLOR}
+   */
   getColor() {
     return this.COLOR
   }
